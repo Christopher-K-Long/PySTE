@@ -3,7 +3,7 @@ requires = ["scikit-build-core", "pybind11"]
 build-backend = "scikit_build_core.build"
 
 [project]
-name = "pyste"
+name = "py-ste"
 version = "1.0.0"
 authors = [
   { name="Christopher_K._Long", email="ckl45@cam.ac.uk" },
