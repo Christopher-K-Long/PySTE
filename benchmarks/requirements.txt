@@ -1,4 +1,4 @@
-py-ste == 1.0.0 # Version to be benchmarked
+py-ste == 1.0.1 # Version to be benchmarked
 
 pyperf
 matplotlib == 3.* # Macro version: "A release that we expect a large effort from our users to upgrade to." See https://matplotlib.org/devdocs/devel/release_guide.html
