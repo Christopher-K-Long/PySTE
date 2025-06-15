@@ -1,0 +1,1 @@
+numpy >= 1.21, < 3 # Major version change will likely indicate an ABI break. See https://numpy.org/doc/stable/dev/depending_on_numpy.html

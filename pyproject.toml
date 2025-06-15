@@ -1,0 +1,30 @@
+[build-system]
+requires = ["scikit-build-core", "pybind11"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "pyste"
+version = "1.0.0"
+authors = [
+  { name="Christopher_K._Long", email="ckl45@cam.ac.uk" },
+]
+maintainers = [
+  { name="Christopher_K._Long", email="ckl45@cam.ac.uk" },
+]
+description = "A Python package for evolving states under the Schrödinger equation using first-order Suzuki-Trotter and computing switching functions."
+keywords = ["evolver", "evolution", "suzuki", "trotter", "simulation", "intergrator", "integration", "unitary", "quantum"]
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "Apache-2.0"
+license-files = ["LICEN[CS]E*"]
+dependencies = ["numpy"]
+
+[project.urls]
+Homepage = "https://github.com/Christopher-K-Long/PySTE"
+Documentation = "https://PySTE.readthedocs.io/"
+Issues = "https://github.com/Christopher-K-Long/PySTE/issues"
+Changelog = "https://github.com/Christopher-K-Long/PySTE/blob/main/ChangeLog.md"

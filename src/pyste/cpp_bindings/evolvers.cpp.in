@@ -1,0 +1,49 @@
+#include "evolvers.hpp"
+
+PYBIND11_MODULE(evolvers, m) {
+    m.attr("__name__") = "pyste.evolvers";
+
+    py::class_<UnitaryEvolver> evolver_parent(m,"UnitaryEvolver");
+
+    py::class_<ste::UnitaryEvolver<Dynamic, Dynamic, SMatrix>>
+        sparse_parent(m,"SparseUnitaryEvolver", evolver_parent);
+    add_attributes<Dynamic, Dynamic, SMatrix>(sparse_parent);
+
+    typedef ste::DMatrix<Dynamic, Dynamic> Dynamic_DMatrix;
+    py::class_<ste::UnitaryEvolver<Dynamic, Dynamic, Dynamic_DMatrix>>
+        dense_parent(m,"DenseUnitaryEvolver", evolver_parent);
+    add_attributes<Dynamic, Dynamic, Dynamic_DMatrix>(
+        dense_parent
+    );
+
+    Eigen::setNbThreads(1);
+    m.def("_get_threads", []() { return Eigen::nbThreads(); });
+    m.def("_set_threads",
+          [](int threads) { return Eigen::setNbThreads(threads); });
+
+    /* The following line will be expanded by CMake to:
+    
+    init_evolver_0_0(m, dense_parent, sparse_parent);
+    init_evolver_0_1(m, dense_parent, sparse_parent);
+    init_evolver_0_2(m, dense_parent, sparse_parent);
+    init_evolver_0_3(m, dense_parent, sparse_parent);
+    .
+    .
+    .
+    init_evolver_1_0(m, dense_parent, sparse_parent);
+    init_evolver_1_1(m, dense_parent, sparse_parent);
+    init_evolver_1_2(m, dense_parent, sparse_parent);
+    init_evolver_1_3(m, dense_parent, sparse_parent);
+    .
+    .
+    .
+    init_evolver_2_0(m, dense_parent, sparse_parent);
+    init_evolver_2_1(m, dense_parent, sparse_parent);
+    init_evolver_2_2(m, dense_parent, sparse_parent);
+    init_evolver_2_3(m, dense_parent, sparse_parent);
+    .
+    .
+    .
+    */
+    @INIT_CALLS@
+}

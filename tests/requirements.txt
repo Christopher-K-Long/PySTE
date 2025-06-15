@@ -1,0 +1,4 @@
+toml
+pyyaml
+scipy == 1.* # Major version change may be backwards incompatible. See https://docs.scipy.org/doc/scipy/dev/core-dev/index.html#version-numbering
+numpy >= 1.21, < 3 # Major version change will likely indicate an ABI break. See https://numpy.org/doc/stable/dev/depending_on_numpy.html

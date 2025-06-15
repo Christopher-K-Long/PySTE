@@ -1,0 +1,36 @@
+#include <cmath>
+#include "single_evolver.hpp"
+
+// The variables enclosed in at symbols will be replaced by CMake
+
+void init_evolver_@NCTRL@_@DIM@(py::module_ &m,
+                                py::class_<ste::UnitaryEvolver<-1, -1, ste::DMatrix<-1, -1>>> &dense_parent,
+                                py::class_<ste::UnitaryEvolver<-1, -1, SMatrix>> &sparse_parent) {
+    #if @NCTRL_IS_POWER@ == 1
+        #if @NCTRL@ == 0
+            constexpr int n_ctrl = -1;
+        #else
+            constexpr int n_ctrl = std::pow(@NCTRL_BASE@, @NCTRL@);
+        #endif
+    #else
+        constexpr int n_ctrl = @NCTRL@ - 1;
+    #endif
+    #if @DIM_IS_POWER@ == 1
+        #if @DIM@ == 0
+            constexpr int dim = -1;
+        #else
+            constexpr int dim = std::pow(@DIM_BASE@, @DIM@);
+        #endif
+    #else
+        constexpr int dim = @DIM@ - 1;
+    #endif
+    if constexpr (n_ctrl != 0
+                  && dim != 0
+                  && !(n_ctrl == -1 && dim == -1)) {
+        typedef ste::DMatrix<dim, dim> DMatrix;
+        generate_evolver_class<n_ctrl, dim, SMatrix>(
+            m, "SparseUnitaryEvolver", sparse_parent);
+        generate_evolver_class<n_ctrl, dim, DMatrix>(
+            m, "DenseUnitaryEvolver", dense_parent);
+    }
+};

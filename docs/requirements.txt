@@ -1,0 +1,9 @@
+pyste == 1.0.0 # Version to be documented
+
+furo
+cffconvert
+myst-parser
+sphinx_math_dollar
+sphinx_tabs
+sphinx-codeautolink
+git+https://github.com/bayashi-cl/stubdoc

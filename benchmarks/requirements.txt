@@ -1,0 +1,11 @@
+pyste == 1.0.0 # Version to be benchmarked
+
+pyperf
+matplotlib == 3.* # Macro version: "A release that we expect a large effort from our users to upgrade to." See https://matplotlib.org/devdocs/devel/release_guide.html
+pandas == 2.* # "API breaking changes should only occur in major releases." See https://pandas.pydata.org/docs/development/policies.html
+numpy >= 1.21, < 3 # Major version change will likely indicate an ABI break. See https://numpy.org/doc/stable/dev/depending_on_numpy.html
+
+qutip == 5.* # "Changes that are not backwards-compatible may only be made in a major release." See https://qutip.readthedocs.io/en/qutip-5.1.x/development/release_distribution.html
+cython >= 0.29.20 # QuTip 5.0 requirement. See https://qutip.readthedocs.io/en/qutip-5.0.x/installation.html
+setuptools # QuTip 5.0 does not specify a requirement. See https://qutip.readthedocs.io/en/qutip-5.0.x/installation.html
+filelock # QuTip 5.0 does not specify a requirement. See https://qutip.readthedocs.io/en/qutip-5.0.x/installation.html

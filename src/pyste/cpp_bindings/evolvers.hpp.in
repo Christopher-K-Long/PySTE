@@ -1,0 +1,133 @@
+#include <pybind11/pybind11.h>
+#include <pybind11/eigen.h>
+#include <pybind11/stl.h>
+
+#include <Suzuki-Trotter-Evolver/UnitaryEvolver.hpp>
+
+namespace py = pybind11;
+namespace ste = Suzuki_Trotter_Evolver;
+
+using std::vector;
+using ste::SMatrix;
+
+struct UnitaryEvolver {};
+
+template <int n_ctrl, int dim, typename Matrix>
+void add_attributes(py::class_<ste::UnitaryEvolver<n_ctrl, dim, Matrix>> &cls) {
+    const int dim_x_n_ctrl = (dim == Dynamic || n_ctrl == Dynamic)
+                       ? Dynamic
+                       : dim * n_ctrl;
+    typedef ste::UnitaryEvolver<n_ctrl, dim, Matrix> T;
+    cls.def(py::init<ste::DMatrix<dim, dim>, ste::DMatrix<dim_x_n_ctrl, dim>>())
+       .def("propagate",
+            &T::propagate,
+            py::return_value_policy::reference_internal,
+            py::arg("ctrl_amp").noconvert(),
+            py::arg("state").noconvert(),
+            py::arg("dt").noconvert())
+       .def("propagate_collection",
+            &T::template propagate_collection<Dynamic>,
+            py::return_value_policy::reference_internal,
+            py::arg("ctrl_amp").noconvert(),
+            py::arg("states").noconvert(),
+            py::arg("dt").noconvert())
+       .def("propagate_all",
+            &T::propagate_all,
+            py::return_value_policy::reference_internal,
+            py::arg("ctrl_amp").noconvert(),
+            py::arg("state").noconvert(),
+            py::arg("dt").noconvert())
+       .def("evolved_expectation_value",
+            &T::evolved_expectation_value,
+            py::return_value_policy::reference_internal,
+            py::arg("ctrl_amp").noconvert(),
+            py::arg("state").noconvert(),
+            py::arg("dt").noconvert(),
+            py::arg("observable").noconvert())
+       .def("evolved_expectation_value_all",
+            &T::evolved_expectation_value_all,
+            py::return_value_policy::reference_internal,
+            py::arg("ctrl_amp").noconvert(),
+            py::arg("state").noconvert(),
+            py::arg("dt").noconvert(),
+            py::arg("observable").noconvert())
+       .def("switching_function",
+            &T::switching_function,
+            py::return_value_policy::reference_internal,
+            py::arg("ctrl_amp").noconvert(),
+            py::arg("state").noconvert(),
+            py::arg("dt").noconvert(),
+            py::arg("cost").noconvert())
+       .def_property_readonly("n_ctrl", [](const py::object&) -> int { return n_ctrl; })
+       .def_property_readonly("dim", [](const py::object&) -> int { return dim; })
+       .def_property_readonly("dim_x_n_ctrl", [](const py::object&) -> int { return dim_x_n_ctrl; })
+       .def_readonly("length", &T::length)
+       .def_readonly("d0", &T::d0)
+       .def_readonly("ds", &T::ds)
+       .def_readonly("u0", &T::u0)
+       .def_readonly("u0_inverse", &T::u0_inverse)
+       .def_readonly("us", &T::us)
+       .def_readonly("us_individual", &T::us_individual)
+       .def_readonly("us_inverse_individual", &T::us_inverse_individual)
+       .def_readonly("hs", &T::hs)
+       .def_readonly("u0_inverse_u_last", &T::u0_inverse_u_last)
+       .def(py::pickle(
+           [](const T &p) { // __getstate__
+               /* Return a tuple that fully encodes the state of the object */
+               return py::make_tuple(p.length,
+                                     p.d0,
+                                     p.ds,
+                                     p.u0,
+                                     p.u0_inverse,
+                                     p.us,
+                                     p.us_individual,
+                                     p.us_inverse_individual,
+                                     p.hs,
+                                     p.u0_inverse_u_last);
+           },
+           [](py::tuple t) { // __setstate__
+               if (t.size() != 10) {
+                   throw std::runtime_error("Invalid state!");
+               }
+
+               /* Create a new C++ instance */
+               T p(t[0].cast<size_t>(),
+                   t[1].cast<Eigen::Array<complex<double>, dim, 1>>(),
+                   t[2].cast<vector<Eigen::Array<complex<double>, dim, 1>>>(),
+                   t[3].cast<Matrix>(),
+                   t[4].cast<Matrix>(),
+                   t[5].cast<vector<Matrix>>(),
+                   t[6].cast<vector<Matrix>>(),
+                   t[7].cast<vector<Matrix>>(),
+                   t[8].cast<vector<Matrix>>(),
+                   t[9].cast<Matrix>());
+               return p;
+           }
+       ));
+};
+
+/* The following line will be expanded by CMake to:
+
+void init_evolver_0_0(py::module_ &m, py::class_<ste::UnitaryEvolver<-1, -1, ste::DMatrix<-1, -1>>> &dense_parent, py::class_<ste::UnitaryEvolver<-1, -1, SMatrix>> &sparse_parent);
+void init_evolver_0_1(py::module_ &m, py::class_<ste::UnitaryEvolver<-1, -1, ste::DMatrix<-1, -1>>> &dense_parent, py::class_<ste::UnitaryEvolver<-1, -1, SMatrix>> &sparse_parent);
+void init_evolver_0_2(py::module_ &m, py::class_<ste::UnitaryEvolver<-1, -1, ste::DMatrix<-1, -1>>> &dense_parent, py::class_<ste::UnitaryEvolver<-1, -1, SMatrix>> &sparse_parent);
+void init_evolver_0_3(py::module_ &m, py::class_<ste::UnitaryEvolver<-1, -1, ste::DMatrix<-1, -1>>> &dense_parent, py::class_<ste::UnitaryEvolver<-1, -1, SMatrix>> &sparse_parent);
+.
+.
+.
+void init_evolver_1_0(py::module_ &m, py::class_<ste::UnitaryEvolver<-1, -1, ste::DMatrix<-1, -1>>> &dense_parent, py::class_<ste::UnitaryEvolver<-1, -1, SMatrix>> &sparse_parent);
+void init_evolver_1_1(py::module_ &m, py::class_<ste::UnitaryEvolver<-1, -1, ste::DMatrix<-1, -1>>> &dense_parent, py::class_<ste::UnitaryEvolver<-1, -1, SMatrix>> &sparse_parent);
+void init_evolver_1_2(py::module_ &m, py::class_<ste::UnitaryEvolver<-1, -1, ste::DMatrix<-1, -1>>> &dense_parent, py::class_<ste::UnitaryEvolver<-1, -1, SMatrix>> &sparse_parent);
+void init_evolver_1_3(py::module_ &m, py::class_<ste::UnitaryEvolver<-1, -1, ste::DMatrix<-1, -1>>> &dense_parent, py::class_<ste::UnitaryEvolver<-1, -1, SMatrix>> &sparse_parent);
+.
+.
+.
+void init_evolver_2_0(py::module_ &m, py::class_<ste::UnitaryEvolver<-1, -1, ste::DMatrix<-1, -1>>> &dense_parent, py::class_<ste::UnitaryEvolver<-1, -1, SMatrix>> &sparse_parent);
+void init_evolver_2_1(py::module_ &m, py::class_<ste::UnitaryEvolver<-1, -1, ste::DMatrix<-1, -1>>> &dense_parent, py::class_<ste::UnitaryEvolver<-1, -1, SMatrix>> &sparse_parent);
+void init_evolver_2_2(py::module_ &m, py::class_<ste::UnitaryEvolver<-1, -1, ste::DMatrix<-1, -1>>> &dense_parent, py::class_<ste::UnitaryEvolver<-1, -1, SMatrix>> &sparse_parent);
+void init_evolver_2_3(py::module_ &m, py::class_<ste::UnitaryEvolver<-1, -1, ste::DMatrix<-1, -1>>> &dense_parent, py::class_<ste::UnitaryEvolver<-1, -1, SMatrix>> &sparse_parent);
+.
+.
+.
+*/
+@INIT_DEFS@
