@@ -150,10 +150,8 @@ jobs:
     - github-release
     runs-on: ubuntu-latest
     environment:
-      # name: pypi
-      name: testpypi
-      # url: https://pypi.org/p/PySTE
-      url: https://test.pypi.org/p/Py-STE
+      name: pypi
+      url: https://pypi.org/p/PySTE
     permissions:
       id-token: write  # IMPORTANT: mandatory for trusted publishing
 
@@ -167,5 +165,4 @@ jobs:
     - name: Publish distribution to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        repository-url: https://test.pypi.org/legacy/
         verbose: true
