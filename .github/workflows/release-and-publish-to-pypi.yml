@@ -19,7 +19,7 @@ jobs:
         python -m pip install --upgrade pip
 #    - name: Check version has not already been uploaded to PyPI
 #      run: |
-#        pip index versions pyste
+#        pip index versions py-ste
 #        PYPI_VERSION=$(pip index versions pyste | perl -nle"print $& while m{(?<=Available versions: )[1-9]*\.[1-9]*\.[1-9]*}g")
 #        LOCAL_VERSION=$(cat "CITATION.cff" | perl -nle'print $& while m{(?<=^version:\s).*}g')
 #        echo "PyPI version: $PYPI_VERSION"
