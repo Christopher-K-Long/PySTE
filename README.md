@@ -16,7 +16,7 @@ More detailed benchmarks can be found here: [https://PySTE.readthedocs.io/en/lat
 PySTE can be installed as follows:
 
 ```bash
-pip install pyste
+pip install py-ste
 ```
 
 ### Support
@@ -101,7 +101,7 @@ The base of the powers when using ``--config-setting="cmake.define.DIM_FIXED_SIZ
 
 For example,
 ```bash
-pip install pyste \
+pip install py-ste \
 --config-setting="cmake.define.NCTRL_FIXED_SIZES=SINGLE" \
 --config-setting="cmake.define.NCTRL=2" \
 --config-setting="cmake.define.DIM_FIXED_SIZES=POWER" \
