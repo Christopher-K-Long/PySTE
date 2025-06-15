@@ -38,7 +38,7 @@ napoleon_numpy_docstring = True
 viewcode_line_numbers = True
 myst_heading_anchors = 5
 suppress_warnings = ["myst.header"]
-module_names = ["pyste.evolvers"] # modules to use .pyi file for instead
+module_names = ["py_ste.evolvers"] # modules to use .pyi file for instead
 sphinx_tabs_disable_tab_closing = True
 toc_object_entries_show_parents = 'hide'
 

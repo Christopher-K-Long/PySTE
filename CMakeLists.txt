@@ -79,15 +79,15 @@ macro(configure)
     math(EXPR EVOLVERS_HPP_COUNTER "${EVOLVERS_HPP_COUNTER}+1" OUTPUT_FORMAT HEXADECIMAL)
     math(EXPR EVOLVERS_CPP_COUNTER "${EVOLVERS_CPP_COUNTER}+1" OUTPUT_FORMAT HEXADECIMAL)
     # Configure files into new files with updated counters in name
-    configure_file(${EVOLVERS_HPP} ${CMAKE_CURRENT_BINARY_DIR}/src/pyste/cpp_bindings/evolvers${EVOLVERS_HPP_COUNTER}.hpp.in @ONLY)
-    configure_file(${EVOLVERS_CPP} ${CMAKE_CURRENT_BINARY_DIR}/src/pyste/cpp_bindings/evolvers${EVOLVERS_CPP_COUNTER}.cpp.in @ONLY)
-    configure_file(src/pyste/cpp_bindings/single_evolver.cpp.in src/pyste/cpp_bindings/single_evolver_${NCTRL}_${DIM}.cpp @ONLY)
+    configure_file(${EVOLVERS_HPP} ${CMAKE_CURRENT_BINARY_DIR}/src/py_ste/cpp_bindings/evolvers${EVOLVERS_HPP_COUNTER}.hpp.in @ONLY)
+    configure_file(${EVOLVERS_CPP} ${CMAKE_CURRENT_BINARY_DIR}/src/py_ste/cpp_bindings/evolvers${EVOLVERS_CPP_COUNTER}.cpp.in @ONLY)
+    configure_file(src/py_ste/cpp_bindings/single_evolver.cpp.in src/py_ste/cpp_bindings/single_evolver_${NCTRL}_${DIM}.cpp @ONLY)
     # Update current file paths to the latest configured
-    set(EVOLVERS_HPP ${CMAKE_CURRENT_BINARY_DIR}/src/pyste/cpp_bindings/evolvers${EVOLVERS_HPP_COUNTER}.hpp.in)
-    set(EVOLVERS_CPP ${CMAKE_CURRENT_BINARY_DIR}/src/pyste/cpp_bindings/evolvers${EVOLVERS_CPP_COUNTER}.cpp.in)
+    set(EVOLVERS_HPP ${CMAKE_CURRENT_BINARY_DIR}/src/py_ste/cpp_bindings/evolvers${EVOLVERS_HPP_COUNTER}.hpp.in)
+    set(EVOLVERS_CPP ${CMAKE_CURRENT_BINARY_DIR}/src/py_ste/cpp_bindings/evolvers${EVOLVERS_CPP_COUNTER}.cpp.in)
     # Adding files that have finished configuring to the source
     set(PYBIND_SRC ${PYBIND_SRC}
-        ${CMAKE_CURRENT_BINARY_DIR}/src/pyste/cpp_bindings/single_evolver_${NCTRL}_${DIM}.cpp
+        ${CMAKE_CURRENT_BINARY_DIR}/src/py_ste/cpp_bindings/single_evolver_${NCTRL}_${DIM}.cpp
     )
     math(EXPR NCTRL_VALUE "${NCTRL}-1" OUTPUT_FORMAT DECIMAL)
     math(EXPR DIM_VALUE "${DIM}-1" OUTPUT_FORMAT DECIMAL)
@@ -114,11 +114,11 @@ endmacro()
 math(EXPR EVOLVERS_HPP_COUNTER "0" OUTPUT_FORMAT HEXADECIMAL)
 math(EXPR EVOLVERS_CPP_COUNTER "0" OUTPUT_FORMAT HEXADECIMAL)
 # Initialise configuration file paths
-set(EVOLVERS_HPP ${CMAKE_CURRENT_BINARY_DIR}/src/pyste/cpp_bindings/evolvers${EVOLVERS_HPP_COUNTER}.hpp.in)
-set(EVOLVERS_CPP ${CMAKE_CURRENT_BINARY_DIR}/src/pyste/cpp_bindings/evolvers${EVOLVERS_CPP_COUNTER}.cpp.in)
+set(EVOLVERS_HPP ${CMAKE_CURRENT_BINARY_DIR}/src/py_ste/cpp_bindings/evolvers${EVOLVERS_HPP_COUNTER}.hpp.in)
+set(EVOLVERS_CPP ${CMAKE_CURRENT_BINARY_DIR}/src/py_ste/cpp_bindings/evolvers${EVOLVERS_CPP_COUNTER}.cpp.in)
 # Copy files into binary dir
-configure_file(src/pyste/cpp_bindings/evolvers.hpp.in ${EVOLVERS_HPP} COPYONLY)
-configure_file(src/pyste/cpp_bindings/evolvers.cpp.in ${EVOLVERS_CPP} COPYONLY)
+configure_file(src/py_ste/cpp_bindings/evolvers.hpp.in ${EVOLVERS_HPP} COPYONLY)
+configure_file(src/py_ste/cpp_bindings/evolvers.cpp.in ${EVOLVERS_CPP} COPYONLY)
 if(${NCTRL_FIXED_SIZES} STREQUAL SINGLE)
     dim_flow()
     if(NOT (${NCTRL} EQUAL 0))
@@ -137,21 +137,21 @@ endif()
 set(INIT_DEFS "")
 set(INIT_CALLS "")
 # Final configureation
-configure_file(${EVOLVERS_HPP} src/pyste/cpp_bindings/evolvers.hpp @ONLY)
-configure_file(${EVOLVERS_CPP} src/pyste/cpp_bindings/evolvers.cpp @ONLY)
+configure_file(${EVOLVERS_HPP} src/py_ste/cpp_bindings/evolvers.hpp @ONLY)
+configure_file(${EVOLVERS_CPP} src/py_ste/cpp_bindings/evolvers.cpp @ONLY)
 # Copy files into binary dir
-configure_file(src/pyste/cpp_bindings/single_evolver.hpp src/pyste/cpp_bindings/single_evolver.hpp COPYONLY)
-configure_file(src/pyste/cpp_bindings/get_name.cpp src/pyste/cpp_bindings/get_name.cpp COPYONLY)
+configure_file(src/py_ste/cpp_bindings/single_evolver.hpp src/py_ste/cpp_bindings/single_evolver.hpp COPYONLY)
+configure_file(src/py_ste/cpp_bindings/get_name.cpp src/py_ste/cpp_bindings/get_name.cpp COPYONLY)
 # Add files to source
 set(PYBIND_SRC ${PYBIND_SRC}
-    ${CMAKE_CURRENT_BINARY_DIR}/src/pyste/cpp_bindings/evolvers.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/src/pyste/cpp_bindings/evolvers.hpp
-    ${CMAKE_CURRENT_BINARY_DIR}/src/pyste/cpp_bindings/single_evolver.hpp
-    ${CMAKE_CURRENT_BINARY_DIR}/src/pyste/cpp_bindings/get_name.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/src/py_ste/cpp_bindings/evolvers.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/src/py_ste/cpp_bindings/evolvers.hpp
+    ${CMAKE_CURRENT_BINARY_DIR}/src/py_ste/cpp_bindings/single_evolver.hpp
+    ${CMAKE_CURRENT_BINARY_DIR}/src/py_ste/cpp_bindings/get_name.cpp
 )
 
 pybind11_add_module(evolvers ${PYBIND_SRC})
 
 target_link_libraries(evolvers INTERFACE Eigen3::Eigen)
 target_link_libraries(evolvers PUBLIC  Suzuki-Trotter-Evolver)
-install(TARGETS evolvers DESTINATION ./pyste)
+install(TARGETS evolvers DESTINATION ./py_ste)

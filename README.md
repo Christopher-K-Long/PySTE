@@ -19,6 +19,12 @@ PySTE can be installed as follows:
 pip install py-ste
 ```
 
+However, the package should be imported as:
+
+```python
+import py_ste
+```
+
 ### Support
 
 Current support:

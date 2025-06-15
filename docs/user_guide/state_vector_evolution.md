@@ -114,9 +114,9 @@ we can see how the acceleration is achieved by diagonalising the Hamiltonians. T
 
 ## Other propagation methods
 
-In [Quick Start](getting_started.md#quick-start) we integrated a Rabi oscillation using [``propagate()``](../reference/_autosummary/pyste.evolvers.DenseUnitaryEvolver.rst#pyste.evolvers.DenseUnitaryEvolver.propagate). Alternatively, we could use [``propagate()_all``](../reference/_autosummary/pyste.evolvers.DenseUnitaryEvolver.rst#pyste.evolvers.DenseUnitaryEvolver.propagate_all) to collect the whole evolution of the state, $\left(\psi(n\Delta t)\right)_{n=0}^N$, simply by replacing [``propagate()``](../reference/_autosummary/pyste.evolvers.DenseUnitaryEvolver.rst#pyste.evolvers.DenseUnitaryEvolver.propagate) with [``propagate()_all``](../reference/_autosummary/pyste.evolvers.DenseUnitaryEvolver.rst#pyste.evolvers.DenseUnitaryEvolver.propagate_all).
+In [Quick Start](getting_started.md#quick-start) we integrated a Rabi oscillation using [``propagate()``](../reference/_autosummary/py_ste.evolvers.DenseUnitaryEvolver.rst#py_ste.evolvers.DenseUnitaryEvolver.propagate). Alternatively, we could use [``propagate()_all``](../reference/_autosummary/py_ste.evolvers.DenseUnitaryEvolver.rst#py_ste.evolvers.DenseUnitaryEvolver.propagate_all) to collect the whole evolution of the state, $\left(\psi(n\Delta t)\right)_{n=0}^N$, simply by replacing [``propagate()``](../reference/_autosummary/py_ste.evolvers.DenseUnitaryEvolver.rst#py_ste.evolvers.DenseUnitaryEvolver.propagate) with [``propagate()_all``](../reference/_autosummary/py_ste.evolvers.DenseUnitaryEvolver.rst#py_ste.evolvers.DenseUnitaryEvolver.propagate_all).
 
-Further, if we wish to propagate multiple states one solution is to wrap [``propagate()``](../reference/_autosummary/pyste.evolvers.DenseUnitaryEvolver.rst#pyste.evolvers.DenseUnitaryEvolver.propagate) in a for loop:
+Further, if we wish to propagate multiple states one solution is to wrap [``propagate()``](../reference/_autosummary/py_ste.evolvers.DenseUnitaryEvolver.rst#py_ste.evolvers.DenseUnitaryEvolver.propagate) in a for loop:
 
 ```py
 # Each column is an initial state
@@ -132,7 +132,7 @@ for j in range(initial_states.shape[1]):
     output_states[:, j] = evolver.propagate(ctrl_amp, initial_states[:, j], dt)
 ```
 
-However, a more concise and efficient code uses [``propagate_collection()``](../reference/_autosummary/pyste.evolvers.DenseUnitaryEvolver.rst#pyste.evolvers.DenseUnitaryEvolver.propagate_collection):
+However, a more concise and efficient code uses [``propagate_collection()``](../reference/_autosummary/py_ste.evolvers.DenseUnitaryEvolver.rst#py_ste.evolvers.DenseUnitaryEvolver.propagate_collection):
 
 ```py
 # Each column is an initial state

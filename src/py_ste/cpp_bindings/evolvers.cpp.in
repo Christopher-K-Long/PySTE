@@ -1,7 +1,7 @@
 #include "evolvers.hpp"
 
 PYBIND11_MODULE(evolvers, m) {
-    m.attr("__name__") = "pyste.evolvers";
+    m.attr("__name__") = "py_ste.evolvers";
 
     py::class_<UnitaryEvolver> evolver_parent(m,"UnitaryEvolver");
 

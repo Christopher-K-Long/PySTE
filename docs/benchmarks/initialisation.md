@@ -1,6 +1,6 @@
 # Initialisation Benchmark
 
-For our initialisation benchmarks we estimate the time to execute [``get_unitary_evolver()``](../reference/_autosummary/pyste.get_unitary_evolver) using [pyperf](https://github.com/psf/pyperf) with three values and 20 processes: 60 sample points per data point in the plots below. We fix the number of control Hamiltonians to 10 and vary the vector space dimension in the range $\left[1, 64\right]$. We benchmark both the static and dynamic evolvers in the range $\left[1, 16\right]$ and then only benchmark dynamic evolvers there after. For all data points we consider both a [dense](../reference/_autosummary/pyste.evolvers.DenseUnitaryEvolver.rst) and a [sparse](../reference/_autosummary/pyste.evolvers.SparseUnitaryEvolver.rst) evolver.
+For our initialisation benchmarks we estimate the time to execute [``get_unitary_evolver()``](../reference/_autosummary/py_ste.get_unitary_evolver) using [pyperf](https://github.com/psf/pyperf) with three values and 20 processes: 60 sample points per data point in the plots below. We fix the number of control Hamiltonians to 10 and vary the vector space dimension in the range $\left[1, 64\right]$. We benchmark both the static and dynamic evolvers in the range $\left[1, 16\right]$ and then only benchmark dynamic evolvers there after. For all data points we consider both a [dense](../reference/_autosummary/py_ste.evolvers.DenseUnitaryEvolver.rst) and a [sparse](../reference/_autosummary/py_ste.evolvers.SparseUnitaryEvolver.rst) evolver.
 
 ## Dense Hamiltonian
 

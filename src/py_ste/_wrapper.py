@@ -45,23 +45,23 @@ def get_unitary_evolver(drift_hamiltonian: ArrayLike,
     -------
     evolvers.UnitaryEvolver
         An instance of a child class of
-        :class:`evolvers.UnitaryEvolver <pyste.evolvers.UnitaryEvolver>`.
+        :class:`evolvers.UnitaryEvolver <py_ste.evolvers.UnitaryEvolver>`.
         If ``sparse == False`` then the returned instance will be a child class
         of
-        :class:`evolvers.DenseUnitaryEvolver <pyste.evolvers.DenseUnitaryEvolver>`
+        :class:`evolvers.DenseUnitaryEvolver <py_ste.evolvers.DenseUnitaryEvolver>`
         else
-        :class:`evolvers.SparseUnitaryEvolver <pyste.evolvers.SparseUnitaryEvolver>`
+        :class:`evolvers.SparseUnitaryEvolver <py_ste.evolvers.SparseUnitaryEvolver>`
         is returned. Both
-        :class:`evolvers.DenseUnitaryEvolver <pyste.evolvers.DenseUnitaryEvolver>`
+        :class:`evolvers.DenseUnitaryEvolver <py_ste.evolvers.DenseUnitaryEvolver>`
         and
-        :class:`evolvers.SparseUnitaryEvolver <pyste.evolvers.SparseUnitaryEvolver>`
+        :class:`evolvers.SparseUnitaryEvolver <py_ste.evolvers.SparseUnitaryEvolver>`
         are dynamic evolvers: evolvers for which the number of control
         Hamiltonians and the vector space dimension are determined at runtime
         based on the shapes of ``drift_hamiltonian`` and ``control_hamiltonians``. If possible
         ``get_unitary_evolver()`` will return an instance of
-        :class:`evolvers.DenseUnitaryEvolver_nctrl_dim <pyste.evolvers.DenseUnitaryEvolver_nctrl_dim>`
+        :class:`evolvers.DenseUnitaryEvolver_nctrl_dim <py_ste.evolvers.DenseUnitaryEvolver_nctrl_dim>`
         or 
-        :class:`evolvers.SparseUnitaryEvolver_nctrl_dim <pyste.evolvers.SparseUnitaryEvolver_nctrl_dim>`,
+        :class:`evolvers.SparseUnitaryEvolver_nctrl_dim <py_ste.evolvers.SparseUnitaryEvolver_nctrl_dim>`,
         where ``nctrl`` and ``dim`` are substituted for their corresponding
         values.
         These are fixed evolvers where the number of controls (``nctrl``) and
@@ -71,9 +71,9 @@ def get_unitary_evolver(drift_hamiltonian: ArrayLike,
         Note
         ----
         An instance of
-        :class:`evolvers.UnitaryEvolver <pyste.evolvers.UnitaryEvolver>`
+        :class:`evolvers.UnitaryEvolver <py_ste.evolvers.UnitaryEvolver>`
         itself will never be returned.
-        :class:`evolvers.UnitaryEvolver <pyste.evolvers.UnitaryEvolver>`
+        :class:`evolvers.UnitaryEvolver <py_ste.evolvers.UnitaryEvolver>`
         is simply a base class for all evolvers allowing for checks such as::
 
             isinstance(evolver, evolvers.UnitaryEvolver)

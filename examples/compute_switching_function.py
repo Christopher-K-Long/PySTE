@@ -1,7 +1,7 @@
 # examples/compute_switching_function.py
 import numpy as np
 
-from pyste import get_unitary_evolver
+from py_ste import get_unitary_evolver
 
 # Defining the Pauli matrices
 X = np.array([[0,  1 ],  # Pauli X

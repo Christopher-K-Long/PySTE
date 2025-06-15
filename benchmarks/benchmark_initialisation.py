@@ -1,5 +1,5 @@
 import pyperf
-from pyste import get_unitary_evolver
+from py_ste import get_unitary_evolver
 import numpy as np
 
 VALUES = 3

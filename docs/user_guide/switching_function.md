@@ -36,7 +36,7 @@ where for numerical efficiency we replace $e^{-ia_{ik}H_k\Delta t}$ with $U_ke^{
 
 ## Example
 
-Numerically, we can compute $\tilde \phi_j(n\Delta t)$ using [``switching_function()``](../reference/_autosummary/pyste.evolvers.DenseUnitaryEvolver.rst#pyste.evolvers.DenseUnitaryEvolver.switching_function). As a worked example we will extend our Rabi oscillation example with a Pauli-y drive and we let
+Numerically, we can compute $\tilde \phi_j(n\Delta t)$ using [``switching_function()``](../reference/_autosummary/py_ste.evolvers.DenseUnitaryEvolver.rst#py_ste.evolvers.DenseUnitaryEvolver.switching_function). As a worked example we will extend our Rabi oscillation example with a Pauli-y drive and we let
 
 $$
 \hat O=\begin{bmatrix}1&\phantom{-}1\\1&-1\end{bmatrix}.
@@ -74,7 +74,7 @@ Switching function:
   (-1.5637,0)  (-1.33197,0)
 ```
 
-The switching function output is a tuple. The first entry is the cost function (expectation value). Note we can compute the expectation value alone using [``evolved_expectation_value()``](../reference/_autosummary/pyste.evolvers.DenseUnitaryEvolver.rst#pyste.evolvers.DenseUnitaryEvolver.evolved_expectation_value). The second entry in the tuple is the switching function itself as a $\textrm{length}\times N$ matrix.
+The switching function output is a tuple. The first entry is the cost function (expectation value). Note we can compute the expectation value alone using [``evolved_expectation_value()``](../reference/_autosummary/py_ste.evolvers.DenseUnitaryEvolver.rst#py_ste.evolvers.DenseUnitaryEvolver.evolved_expectation_value). The second entry in the tuple is the switching function itself as a $\textrm{length}\times N$ matrix.
 
 ---
 [Previous](state_vector_evolution.md) | [Next](multithreading.md)

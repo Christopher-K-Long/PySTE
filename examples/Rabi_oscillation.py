@@ -1,7 +1,7 @@
 # examples/Rabi_oscillation.py
 import numpy as np
 
-from pyste import get_unitary_evolver
+from py_ste import get_unitary_evolver
 
 X = np.array([[0,  1],  # Pauli X
               [1,  0]])

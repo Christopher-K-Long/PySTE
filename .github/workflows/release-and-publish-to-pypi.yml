@@ -20,7 +20,7 @@ jobs:
 #    - name: Check version has not already been uploaded to PyPI
 #      run: |
 #        pip index versions py-ste
-#        PYPI_VERSION=$(pip index versions pyste | perl -nle"print $& while m{(?<=Available versions: )[1-9]*\.[1-9]*\.[1-9]*}g")
+#        PYPI_VERSION=$(pip index versions py_ste | perl -nle"print $& while m{(?<=Available versions: )[1-9]*\.[1-9]*\.[1-9]*}g")
 #        LOCAL_VERSION=$(cat "CITATION.cff" | perl -nle'print $& while m{(?<=^version:\s).*}g')
 #        echo "PyPI version: $PYPI_VERSION"
 #        echo "Local version: $LOCAL_VERSION"

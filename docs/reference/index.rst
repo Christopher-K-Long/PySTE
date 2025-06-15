@@ -6,4 +6,4 @@ API Reference
     :template: module.rst
     :recursive:
 
-    pyste
+    py_ste

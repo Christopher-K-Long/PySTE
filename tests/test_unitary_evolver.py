@@ -1,7 +1,7 @@
 import numpy as np
 import pickle as pkl
 from .unique_names import UniquePath
-from pyste import get_unitary_evolver
+from py_ste import get_unitary_evolver
 
 X = np.array([[0, 1],
               [1, 0]],

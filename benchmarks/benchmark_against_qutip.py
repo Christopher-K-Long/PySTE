@@ -7,8 +7,8 @@ import pandas as pd
 from qutip import sesolve, Qobj
 from tqdm import tqdm
 
-from pyste import get_unitary_evolver
-from pyste import evolvers
+from py_ste import get_unitary_evolver
+from py_ste import evolvers
 
 DIM = 32
 T = 10

@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
 
-from pyste import evolvers
+from py_ste import evolvers
 
 parser = ArgumentParser()
 parser.add_argument('allowed_specs',
