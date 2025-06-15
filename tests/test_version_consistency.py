@@ -32,7 +32,7 @@ def test_version_consistency():
     for requirements_file in REQUIREMENT_FILES:
         with open(requirements_file, "r") as f:
             for line in f.readlines():
-                if line.startswith("pyste == "):
-                    assert line.startswith(f"pyste == {toml_version}")
+                if line.startswith("py-ste == "):
+                    assert line.startswith(f"py-ste == {toml_version}")
                     break
             else: assert False, f"Version not found in {requirements_file.split(PROJECT_DIR)[1]}"
