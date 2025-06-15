@@ -2,7 +2,8 @@
 
 ## Release 1.0.1
 
-Various hyperlinks in README and documentation have been fixed.
+- Wheels are now compiled correctly
+- Various hyperlinks in README and documentation have been fixed.
 
 ## Release 1.0.0
 
