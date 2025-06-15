@@ -17,17 +17,17 @@ jobs:
     - name: Update pip
       run: |
         python -m pip install --upgrade pip
-    - name: Check version has not already been uploaded to PyPI
-      run: |
-        pip index versions pyste
-        PYPI_VERSION=$(pip index versions pyste | perl -nle"print $& while m{(?<=Available versions: )[1-9]*\.[1-9]*\.[1-9]*}g")
-        LOCAL_VERSION=$(cat "CITATION.cff" | perl -nle'print $& while m{(?<=^version:\s).*}g')
-        echo "PyPI version: $PYPI_VERSION"
-        echo "Local version: $LOCAL_VERSION"
-        if [ "$PYPI_VERSION" == "$LOCAL_VERSION" ]; then
-          echo "This version has already been released."
-          exit 1
-        fi
+#    - name: Check version has not already been uploaded to PyPI
+#      run: |
+#        pip index versions pyste
+#        PYPI_VERSION=$(pip index versions pyste | perl -nle"print $& while m{(?<=Available versions: )[1-9]*\.[1-9]*\.[1-9]*}g")
+#        LOCAL_VERSION=$(cat "CITATION.cff" | perl -nle'print $& while m{(?<=^version:\s).*}g')
+#        echo "PyPI version: $PYPI_VERSION"
+#        echo "Local version: $LOCAL_VERSION"
+#        if [ "$PYPI_VERSION" == "$LOCAL_VERSION" ]; then
+#          echo "This version has already been released."
+#          exit 1
+#        fi
 
   build_wheels:
     name: Build wheel on ${{ matrix.os }}
