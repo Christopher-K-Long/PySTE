@@ -7,7 +7,7 @@ PySTE stands for Python Suzuki-Trotter-Evolver and is a Python interface to the 
 
 While PySTE has limited functionality in comparison to more fleshed out quantum simulation packages such as [QuTiP](https://qutip.org), it is faster at some tasks:
 
-![benchmark PySTE vs QuTiP](https://PySTE.readthedocs.io/en/latest/benchmarks/results/plots/benchmark_against_qutip.png)
+![benchmark PySTE vs QuTiP](https://pyste.readthedocs.io/en/latest/_images/benchmark_against_qutip.png)
 
 More detailed benchmarks can be found here: [https://PySTE.readthedocs.io/en/latest/benchmarks/index.html](https://PySTE.readthedocs.io/en/latest/benchmarks/index.html)
 
