@@ -21,4 +21,4 @@ PySTE documentation
     citation/include_citation
     include_license
     GitHub <https://github.com/Christopher-K-Long/PySTE>
-    PyPI <https://pypi.org/project/saveable-PySTE>
+    PyPI <https://pypi.org/project/Py-STE>
