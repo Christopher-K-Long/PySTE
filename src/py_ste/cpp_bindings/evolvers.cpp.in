@@ -20,6 +20,13 @@ PYBIND11_MODULE(evolvers, m) {
     m.def("_get_threads", []() { return Eigen::nbThreads(); });
     m.def("_set_threads",
           [](int threads) { return Eigen::setNbThreads(threads); });
+    m.def("_unitary_gate_infidelity",
+          [](const Dynamic_DMatrix& gate,
+             const Dynamic_DMatrix& target)
+             { return ste::unitary_gate_infidelity(gate, target); },
+          py::return_value_policy::reference_internal,
+          py::arg("gate").noconvert(),
+          py::arg("target").noconvert());
 
     /* The following line will be expanded by CMake to:
     

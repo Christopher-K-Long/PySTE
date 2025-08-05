@@ -1,6 +1,6 @@
-# State Vector Evolution
+# State Vector and Unitary Evolution
 
-We saw in [Quick Start](getting_started.md#quick-start) how we could implement a simulation of a Rabi Oscillation. Here we will first break down the error in the simulation and how to control this error before moving onto other ways we can propagate state vectors.
+We saw in [Quick Start](getting_started.md#quick-start) how we could implement a simulation of a Rabi Oscillation. Here we will first break down the error in the simulation and how to control this error before moving onto other ways we can propagate state vectors and unitaries.
 
 ## Integration method and errors
 
@@ -109,7 +109,8 @@ we can see how the acceleration is achieved by diagonalising the Hamiltonians. T
 | Property               | Scaling                                                                               |
 | ---------------------- | ------------------------------------------------------------------------------------- |
 | Initialisation runtime | $O(\textrm{length}\times\dim^3)$                                                      |
-| Integrator runtime     | $O(N\times\textrm{length}\times\dim^2)$                                               |
+| State vector integrator runtime     | $O(N\times\textrm{length}\times\dim^2)$                                               |
+| Unitary integrator runtime     | $O(N\times\textrm{length}\times\dim^3)$                                               |
 | Integrator error       | $\mathcal O\left(N\Delta t^2\textrm{length}\left[\omega E+\alpha^2+E^2\right]\right)$ |
 
 ## Other propagation methods
@@ -143,6 +144,8 @@ initial_states = np.array([[1, 0, 1/np.sqrt(2)],
 # Propagate each input state
 output_states = evolver.propagate_collection(ctrl_amp, initial_states, dt)
 ```
+
+Finally, by passing the identity matrix to [``propagate_collection()``](../reference/_autosummary/py_ste.evolvers.DenseUnitaryEvolver.rst#py_ste.evolvers.DenseUnitaryEvolver.propagate_collection) as `states` we can compute the unitary evolution $U(N\Delta t)$. However, a more efficient method is to utilise [``get_evolution()``](../reference/_autosummary/py_ste.evolvers.DenseUnitaryEvolver.rst#py_ste.evolvers.DenseUnitaryEvolver.get_evolution).
 
 ---
 [Previous](getting_started.md) | [Next](switching_function.md)

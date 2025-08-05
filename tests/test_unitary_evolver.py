@@ -1,7 +1,7 @@
 import numpy as np
 import pickle as pkl
 from .unique_names import UniquePath
-from py_ste import get_unitary_evolver
+from py_ste import get_unitary_evolver, unitary_gate_infidelity
 
 X = np.array([[0, 1],
               [1, 0]],
@@ -517,6 +517,56 @@ def test_evolved_expectation_value_all():
 
     assert isApprox(expvals, target_expvals)
 
+# Test inner products
+def test_evolved_inner_product():
+    h0 = Z
+    hs = [X]
+    fixed_vector = np.array([1, -1j], dtype=np.complex128)
+
+    evolver = get_unitary_evolver(h0, hs)
+
+    dt = 0.001
+    omega = 2*np.pi*0.1
+
+    initial_state = np.array([1, 0], dtype=np.complex128)
+    N = 2500
+    ts = dt*np.arange(N, dtype=np.complex128)
+    ctrl_amp = omega*np.cos(2*ts)
+    
+    inner_product = evolver.evolved_inner_product(ctrl_amp,
+                                                  initial_state,
+                                                  dt,
+                                                  fixed_vector)
+    
+    state = evolver.propagate(ctrl_amp, initial_state, dt)
+    target_inner_product = (fixed_vector @ state)
+
+    assert np.abs(inner_product - target_inner_product) <= 1e-15
+
+def test_evolved_inner_product_all():
+    h0 = Z
+    hs = [X]
+    fixed_vector = np.array([1, -1j], dtype=np.complex128)
+
+    evolver = get_unitary_evolver(h0, hs)
+
+    dt = 0.001
+    omega = 2*np.pi*0.1
+
+    initial_state = np.array([1, 0], dtype=np.complex128)
+    N = 2500
+    ts = dt*np.arange(N, dtype=np.complex128)
+    ctrl_amp = omega*np.cos(2*ts)
+    
+    inner_products = evolver.evolved_inner_product_all(ctrl_amp,
+                                                       initial_state,
+                                                       dt,
+                                                       fixed_vector)
+    
+    states = evolver.propagate_all(ctrl_amp, initial_state, dt)
+    target_inner_products = fixed_vector @ states
+
+    assert isApprox(inner_products, target_inner_products)
 
 # Test Switching Function
 def test_switching_function():
@@ -550,5 +600,165 @@ def test_switching_function():
             new_ctrl_amp[j, k] += eps
             expval2 = evolver.evolved_expectation_value(new_ctrl_amp, initial_state, dt, H)
             fd_expval[j, k] = (expval2.real - expval1.real) / eps
+    fd_expval /= dt
+    assert isApprox(switching_function, fd_expval, eps)
+
+# Evolution Tests
+def test_get_evolution_identity():
+    h0 = np.zeros((2, 2))
+    hs = [-Z, -Y]
+
+    evolver = get_unitary_evolver(h0, hs)
+
+    ctrl_amp = np.zeros((100, 2), dtype=np.complex128)
+    dt = 0.1
+
+    output_state = evolver.get_evolution(ctrl_amp, dt)
+
+    assert isApprox(output_state, np.identity(2))
+
+def test_get_evolution_constant_evolution():
+    h0 = Z
+    hs = [-Z, -Y]
+
+    evolver = get_unitary_evolver(h0, hs)
+
+    ctrl_amp = np.zeros((100, 2), dtype=np.complex128)
+    dt = 0.1
+
+    output_state = evolver.get_evolution(ctrl_amp, dt)
+
+    initial_states = np.identity(2, dtype=np.complex128)
+
+    expected_output_state = evolver.propagate_collection(ctrl_amp,
+                                                         initial_states,
+                                                         dt)
+
+    assert isApprox(output_state, expected_output_state)
+
+def test_get_evolution_no_control_Hamiltonians():
+    h0 = Z
+    hs = []
+
+    evolver = get_unitary_evolver(h0, hs)
+
+    ctrl_amp = np.zeros((100, 0), dtype=np.complex128)
+    dt = 0.1
+
+    output_state = evolver.get_evolution(ctrl_amp, dt)
+
+    initial_states = np.identity(2, dtype=np.complex128)
+
+    expected_output_state = evolver.propagate_collection(ctrl_amp,
+                                                         initial_states,
+                                                         dt)
+
+    assert isApprox(output_state, expected_output_state)
+
+def test_get_evolution_Rabi_oscillation():
+    h0 = Z
+    hs = [X]
+
+    evolver = get_unitary_evolver(h0, hs)
+
+    dt = 0.001
+    omega = 2*np.pi*0.001
+
+    initial_states = np.identity(2, dtype=np.complex128)
+
+    N = 10000
+    n = 1000
+    ts = dt*np.arange(N, dtype=np.complex128)
+    ctrl_amp = omega*np.cos(2*ts)
+    for k in range(n, N+n, n):
+        output_states = evolver.get_evolution(ctrl_amp[:k], dt)
+        expected_output_state = evolver.propagate_collection(ctrl_amp[:k], initial_states, dt)
+        assert isApprox(output_states, expected_output_state)
+
+# Test gate infidelity
+def test_unitary_gate_infidelity():
+    I = np.identity(2, dtype=np.complex128);
+    H = np.array([[1,  1],
+                  [1, -1]],
+                 dtype=np.complex128)
+    H /= np.sqrt(2) # Hadamard gate
+
+    assert unitary_gate_infidelity(I, I) == 0
+    assert unitary_gate_infidelity(X, X) == 0
+    assert unitary_gate_infidelity(Y, Y) == 0
+    assert np.abs(unitary_gate_infidelity(I, X) - 2/3) <= 1e-15
+    assert np.abs(unitary_gate_infidelity(X, I) - 2/3) <= 1e-15
+    assert np.abs(unitary_gate_infidelity(I, Y) - 2/3) <= 1e-15
+    assert np.abs(unitary_gate_infidelity(Y, I) - 2/3) <= 1e-15
+    assert np.abs(unitary_gate_infidelity(I, H) - 2/3) <= 1e-15
+    assert np.abs(unitary_gate_infidelity(H, I) - 2/3) <= 1e-15
+    assert np.abs(unitary_gate_infidelity(X, H) - 1/3) <= 1e-15
+    assert np.abs(unitary_gate_infidelity(H, X) - 1/3) <= 1e-15
+    assert np.abs(unitary_gate_infidelity(Y, H) - 2/3) <= 1e-15
+    assert np.abs(unitary_gate_infidelity(H, Y) - 2/3) <= 1e-15
+
+def test_evolved_gate_infidelity():
+    h0 = Z
+    hs = [X]
+    H = np.array([[1,  1],
+                  [1, -1]],
+                 dtype=np.complex128)
+    H /= np.sqrt(2) # Hadamard gate
+
+    evolver = get_unitary_evolver(h0, hs)
+
+    dt = 0.001
+    omega = 2*np.pi*0.1
+
+    initial_state = np.array([1, 0], dtype=np.complex128)
+    N = 2500
+    ts = dt*np.arange(N, dtype=np.complex128)
+    ctrl_amp = omega*np.cos(2*ts)
+    
+    infidelity = evolver.evolved_gate_infidelity(ctrl_amp, dt, H)
+    
+    unitary = evolver.get_evolution(ctrl_amp, dt)
+    target_infidelity = unitary_gate_infidelity(unitary, H)
+
+    assert np.abs(infidelity - target_infidelity) <= 1e-15
+
+
+# Test Gate Switching Function
+def test_gate_switching_function():
+    h0 = Z
+    hs = [X, Y]
+    H = np.array([[1, 1],
+                  [1, -1]],
+                 dtype=np.complex128)
+    H = np.array([[1,  1],
+                  [1, -1]],
+                 dtype=np.complex128)
+    H /= np.sqrt(2) # Hadamard gate
+
+    evolver = get_unitary_evolver(h0, hs)
+
+    dt = 0.1
+    omega = 2*np.pi*0.1
+
+    initial_state = np.array([1, 0], dtype=np.complex128)
+    N = 100
+    ts = dt*np.arange(N, dtype=np.complex128)
+    ctrl_amp = np.stack([omega*np.cos(2*ts), np.zeros(N)], axis=-1)
+
+    infidelity, switching_function = evolver.gate_switching_function(ctrl_amp,
+                                                                     dt,
+                                                                     H)
+
+    infidelity1 = evolver.evolved_gate_infidelity(ctrl_amp, dt, H)
+    assert np.abs(infidelity - infidelity1) <= 1e-15
+    
+    eps = 1e-6
+    fd_expval = np.empty((N, 2))
+    for j in range(N):
+        for k in range(2):
+            new_ctrl_amp = ctrl_amp.copy()
+            new_ctrl_amp[j, k] += eps
+            infidelity2 = evolver.evolved_gate_infidelity(new_ctrl_amp, dt, H)
+            fd_expval[j, k] = (infidelity2 - infidelity1) / eps
     fd_expval /= dt
     assert isApprox(switching_function, fd_expval, eps)

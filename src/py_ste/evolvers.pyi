@@ -50,6 +50,39 @@ def _get_threads() -> int:
     """
     pass
 
+def _unitary_gate_infidelity(gate: np.ndarray,
+                             target:np.ndarray
+                            ) -> float:
+    r"""
+    Computes the gate infidelity between a gate and a target gate:
+    $$
+    \mathcal I(\texttt{gate}, \texttt{target})
+    \coloneqq 1-\frac{
+    \left|\Tr\left[\texttt{target}^\dagger \cdot \texttt{gate}\right]\right|^2
+    +\texttt{dim}}{\texttt{dim}(\texttt{dim}+1)},
+    $$
+    where $\texttt{dim}$ is the dimension of the Hilbert space the gates act
+    upon.
+
+    Parameters
+    ----------
+    gate : NDArray[Shape[dim, dim], scalar]
+        The gate to compute the infidelity of.
+    target : NDArray[Shape[dim, dim], scalar]
+        The target gate to compute the infidelity with respect to.
+
+    Returns
+    -------
+    float
+        The gate infidelity, $\mathcal I(\texttt{gate}, \texttt{target})$.
+
+    Note
+    ----
+    This function is a wrapper around the C++ function
+    :cpp:func:`Suzuki_Trotter_Evolver::unitary_gate_infidelity()`.
+    """
+    pass
+
 class UnitaryEvolver(pybind11_object):
     """
     A base class for
@@ -444,6 +477,7 @@ class DenseUnitaryEvolver(UnitaryEvolver):
         --------
         * :meth:`propagate_collection()`
         * :meth:`propagate_all()`
+        * :meth:`get_evolution()`
         """
         pass
     def propagate_collection(self,
@@ -533,6 +567,7 @@ class DenseUnitaryEvolver(UnitaryEvolver):
         --------
         * :meth:`propagate()`
         * :meth:`propagate_all()`
+        * :meth:`get_evolution()`
         """
         pass
     def propagate_all(self,
@@ -624,6 +659,7 @@ class DenseUnitaryEvolver(UnitaryEvolver):
         --------
         * :meth:`propagate()`
         * :meth:`propagate_collection()`
+        * :meth:`get_evolution()`
         """
         pass
     def evolved_expectation_value(self,
@@ -680,6 +716,8 @@ class DenseUnitaryEvolver(UnitaryEvolver):
         modulated by the control amplitudes. The integration is performed using
         :meth:`propagate_all()`.
 
+        Parameters
+        ----------
         ctrl_amp : NDArray[Shape[time_steps, :attr:`length`], complex128]
             $\left(a_{ij}\right)$ The control amplitudes at each time step
             expressed as an $N\times\textrm{length}$ matrix where the element
@@ -706,6 +744,92 @@ class DenseUnitaryEvolver(UnitaryEvolver):
         See Also
         --------
         * :meth:`evolved_expectation_value()`
+        """
+        pass
+    def evolved_inner_product(self,
+                              ctrl_amp: np.ndarray[np.complex128],
+                              state: np.ndarray[np.complex128],
+                              dt: float,
+                              fixed_vector: np.ndarray[np.complex128]
+                             ) -> complex:
+        r"""
+        Calculates the real inner product of an evolved state vector with a
+        fixed vector. The evolved state vector is evolved under a control
+        Hamiltonian modulated by the control amplitudes. The integration is
+        performed using :meth:`propagate()`.
+
+        Parameters
+        ----------
+        ctrl_amp  : NDArray[Shape[time_steps, :attr:`length`], complex128]
+            $\left(a_{ij}\right)$ The control amplitudes at each time step
+            expressed as an $N\times\textrm{length}$ matrix where the element
+            $a_{ij}$ corresponds to the control amplitude of the $j$th control
+            Hamiltonian at the $i$th time step.
+        state : NDArray[Shape[runtime_dim], complex128]
+            $\left[\psi(0)\right]$ The state vector to propagate.
+        dt : float
+            ($\Delta t$) The time step to propagate by.
+        fixed_vector : NDArray[Shape[runtime_dim], complex128]
+            $(\xi)$ The fixed vector to calculate the expectation value of.
+
+        Returns
+        -------
+        complex
+            The inner product of the evolved state vector with the fixed vector,
+            $\sum_{i=1}^\texttt{dim}\xi_i\psi_i(N\Delta t)$.
+
+        Note
+        ----
+        This function is a wrapper around the C++ function
+        :cpp:func:`Suzuki_Trotter_Evolver::UnitaryEvolver::evolved_inner_product()`.
+
+        See Also
+        --------
+        * :meth:`evolved_inner_product_all()`
+        """
+        pass
+    def evolved_inner_product_all(self,
+                                  ctrl_amp: np.ndarray[np.complex128],
+                                  state: np.ndarray[np.complex128],
+                                  dt: float,
+                                  fixed_vector: np.ndarray[np.complex128]
+                                 ) -> np.ndarray[np.complex128]:
+        r"""
+        Calculates the real inner products of a time series of evolved state
+        vectors with a fixed vector. The evolved state vector is evolved under a
+        control Hamiltonian modulated by the control amplitudes. The integration
+        is performed using :meth:`propagate_all()``.
+
+        Parameters
+        ----------
+        ctrl_amp  : NDArray[Shape[time_steps, :attr:`length`], complex128]
+            $\left(a_{ij}\right)$ The control amplitudes at each time step
+            expressed as an $N\times\textrm{length}$ matrix where the element
+            $a_{ij}$ corresponds to the control amplitude of the $j$th control
+            Hamiltonian at the $i$th time step.
+        state : NDArray[Shape[runtime_dim], complex128]
+            $\left[\psi(0)\right]$ The state vector to propagate.
+        dt : float
+            ($\Delta t$) The time step to propagate by.
+        fixed_vector : NDArray[Shape[runtime_dim], complex128]
+            $(\xi)$ The fixed vector to calculate the expectation value of.
+
+        Returns
+        -------
+        NDArray[Shape[time_steps + 1], complex128]
+            The inner products of the evolved state vectors with the fixed
+            vector,
+            $\left(
+            \sum_{i=1}^\texttt{dim}\xi_i\psi_i(n\Delta t)\right)_{n=0}^N$.
+
+        Note
+        ----
+        This function is a wrapper around the C++ function
+        :cpp:func:`Suzuki_Trotter_Evolver::UnitaryEvolver::evolved_inner_product_all()`.
+
+        See Also
+        --------
+        * :meth:`evolved_inner_product()`.
         """
         pass
     def switching_function(self,
@@ -775,13 +899,225 @@ class DenseUnitaryEvolver(UnitaryEvolver):
             and
             $n\in\left[1,N\right]$.
 
+        See Also
+        --------
+        * :meth:`gate_switching_function()`.
+
         Note
         ----
         This function is a wrapper around the C++ function
         :cpp:func:`Suzuki_Trotter_Evolver::UnitaryEvolver::switching_function()`.
         """
         pass
+    def get_evolution(self,
+                      ctrl_amp: np.ndarray[np.complex128],
+                      dt: float
+                     ) -> np.ndarray[np.complex128]:
+        r"""
+        Computes the unitary corresponding to the evolution under the
+        differential equation
+        $$
+        \dot U=-iHU.
+        $$
+        The computation is performed using the first-order Suzuki-Trotter
+        expansion:     
+        $$
+        \begin{align}
+            U(N\Delta t)&=\prod_{i=1}^N\prod_{j=0}^{\textrm{length}}
+                e^{-ia_{ij}H_j\Delta t}+\mathcal E\\
+            &=\prod_{i=1}^N\prod_{j=0}^{\textrm{length}}
+                U_je^{-ia_{ij}D_j\Delta t}U_j^\dagger+\mathcal E.
+        \end{align}
+        $$
+        where
+        $a_{nj}\coloneqq a(n\Delta t)$,
+        we set
+        $a_{n0}=1$
+        for notational ease, and the additive error
+        $\mathcal E$
+        is
+        $$
+        \begin{align}
+        \mathcal E&=\mathcal O\left(
+            \Delta t^2\left[\sum_{i=1}^N\sum_{j=1}^{\textrm{length}}\dot a_{ij}
+            \norm{H_j}
+            +\sum_{i=1}^N\sum_{j,k=0}^{\textrm{length}}a_{ij}a_{ik}
+            \norm{[H_j,H_k]}\right]
+            \right)\\
+        &=\mathcal O\left(
+            N\Delta t^2\textrm{length}\left[\omega E+\alpha^2+E^2\right]
+            \right)
+        \end{align}
+        $$
+        where $\dot a_{nj}\coloneqq\dot a_j(n\Delta t)$ and
+        $$
+        \begin{align}
+            \omega&\coloneqq\max_{\substack{i\in\left[1,N\right]\\
+                j\in\left[1,\textrm{length}\right]}}\left|\dot a_{ij}\right|,\\
+            \alpha&\coloneqq\max_{\substack{i\in\left[1,N\right]\\
+                j\in\left[0,\textrm{length}\right]}}\left|a_{ij}\right|,\\
+            E&\coloneqq\max_{j\in\left[0,\textrm{length}\right]}\norm{H_j}.
+        \end{align}
+        $$
+        Note the error is quadratic in $\Delta t$ but linear in $N$. We can also
+        view this as being linear in $\Delta t$ and linear in total evolution
+        time $N\Delta t$. Additionally, by Nyquist's theorem this asymptotic
+        error scaling will not be achieved until the time step $\Delta t$ is
+        smaller than $\frac{1}{2\Omega}$ where $\Omega$ is the largest energy or
+        frequency in the system.
 
+        Parameters
+        ----------
+        ctrl_amp  : NDArray[Shape[time_steps, :attr:`length`], complex128]
+            $\left(a_{ij}\right)$ The control amplitudes at each time step
+            expressed as an $N\times\textrm{length}$ matrix where the element
+            $a_{ij}$ corresponds to the control amplitude of the $j$th control
+            Hamiltonian at the $i$th time step.
+        dt : float
+            ($\Delta t$) The time step to propagate by.
+
+        Returns
+        -------
+        NDArray[Shape[runtime_dim, runtime_dim], complex128]
+            The unitary corresponding to the evolution,
+            $U(N\Delta t)$.
+
+        Note
+        ----
+        This function is a wrapper around the C++ function
+        :cpp:func:`Suzuki_Trotter_Evolver::UnitaryEvolver::get_evolution()`.
+
+        See Also
+        --------
+        * :meth:`propagate()`
+        * :meth:`propagate_all()`
+        * :meth:`propagate_collection()`
+        """
+        pass
+    def evolved_gate_infidelity(self,
+                                ctrl_amp: np.ndarray[np.complex128],
+                                dt: float,
+                                target: np.ndarray[np.complex128]
+                               ) -> float:
+        r"""
+        Calculates the gate infidelity with respect to a target gate of the gate
+        produced by the control Hamiltonian modulated by the control amplitudes.
+        The integration is performed using
+        :meth:`get_evolution()`.
+
+        Parameters
+        ----------
+        ctrl_amp  : NDArray[Shape[time_steps, :attr:`length`], complex128]
+            $\left(a_{ij}\right)$ The control amplitudes at each time step
+            expressed as an $N\times\textrm{length}$ matrix where the element
+            $a_{ij}$ corresponds to the control amplitude of the $j$th control
+            Hamiltonian at the $i$th time step.
+        dt : float
+            ($\Delta t$) The time step to propagate by.
+        target : NDArray[Shape[runtime_dim, runtime_dim], complex128]
+            The target gate to calculate the infidelity with respect to.
+
+        Returns
+        -------
+        float
+            The gate infidelity with respect to the target gate:
+            $$
+            \mathcal I(U(N\Delta t), \texttt{target})
+            \coloneqq 1-\frac{
+            \left|\Tr\left[
+            \texttt{target}^\dagger\cdot U(N\Delta t)\right]\right|^2
+            +\texttt{dim}}{\texttt{dim}(\texttt{dim}+1)}.
+            $$
+
+        Note
+        ----
+        This function is a wrapper around the C++ function
+        :cpp:func:`Suzuki_Trotter_Evolver::UnitaryEvolver::evolved_gate_infidelity()`.
+
+        See Also
+        --------
+        * :func:`unitary_gate_infidelity()`.
+        """
+        pass
+    def gate_switching_function(self,
+                                ctrl_amp: np.ndarray[np.complex128],
+                                dt: float,
+                                target: np.ndarray[np.complex128]
+                               ) -> tuple[float, np.ndarray[np.float64]]:
+        r"""
+        Calculates the switching function for a Mayer problem with the gate
+        infidelity as the cost function. More precisely if the cost function is
+        $$
+        J\left[\vec a(t)\right]
+        \coloneqq\mathcal I(U\left[\vec a(t); T\right], \texttt{target})
+        \coloneqq 1-\frac{\left|\Tr\left[\texttt{target}^\dagger
+        \cdot U\left[\vec a(t); T\right]\right]\right|^2
+        +\texttt{dim}}{\texttt{dim}(\texttt{dim}+1)}.
+        $$
+        where $T=N\Delta t$, then the switching function is
+        $$
+        \begin{align}
+        &\phi_j(t)\coloneqq\frac{\delta J}{\delta a_j(t)}\\
+        &=\frac{2}{\texttt{dim}(\texttt{dim}+1)}\operatorname{Im}\left(
+        \Tr\left[U^\dagger(N\Delta t)\cdot\texttt{target}\right]
+        \Tr\left[\texttt{target}^\dagger
+        \cdot U(t\to T)H_j U[\vec a(t);t]\right]\right).
+        \end{align}
+        $$
+        Using the first-order Suzuki-Trotter expansion we can express the
+        switching function as
+        $$
+        \begin{align}
+            &\phi_j(n\Delta t)=\frac{1}{\Delta t}\pdv{J}{a_{nj}}\\
+            &=\!\frac{2}{\texttt{dim}(\texttt{dim}+1)}\operatorname{Im}
+                \!\left(
+                \Tr\!\left[U^\dagger(N\Delta t)\cdot\texttt{target}\right]
+                \vphantom{[\prod_{k=j}^{\textrm{length}}}\right.\\
+                &\left.\cdot\Tr\!\left[\texttt{target}^\dagger\!\cdot\!
+                \left[\prod_{i>n}^N\prod_{k=1}^{\textrm{length}}
+                e^{-ia_{ik}H_k\Delta t}\right]\!\!\!
+                \left[\prod_{k=j}^{\textrm{length}}
+                e^{-ia_{nk}H_k\Delta t}\right]\!H_j\!\!
+                \left[\prod_{k=0}^{j-1}
+                e^{-ia_{nk}H_k\Delta t}\right]
+                \! U(\left[n-1\right]\Delta t)\right]\right),
+        \end{align}
+        $$
+        where for numerical efficiency we replace
+        $e^{-ia_{ik}H_k\Delta t}$
+        with
+        $U_ke^{-ia_{ik}D_k\Delta t}U_k^\dagger$
+        as in :meth:`get_evolution()`.
+
+        Parameters
+        ----------
+        ctrl_amp  : NDArray[Shape[time_steps, :attr:`length`], complex128]
+            $\left(a_{ij}\right)$ The control amplitudes at each time step
+            expressed as an $N\times\textrm{length}$ matrix where the element
+            $a_{ij}$ corresponds to the control amplitude of the $j$th control
+            Hamiltonian at the $i$th time step.
+        dt : float
+            ($\Delta t$) The time step to propagate by.
+        target : NDArray[Shape[runtime_dim, runtime_dim], complex128]
+            The target gate to calculate the infidelity with respect to.
+
+        Returns
+        -------
+        tuple[float, NDArray[Shape[time_steps, :attr:`length`], float64]]
+            The gate infidelity,
+            $I(U\left[\vec a(t); T\right], \texttt{target})$ and
+            the switching function,
+            $\phi_j(n\Delta t)$
+            for all
+            $j\in\left[1,\textrm{length}\right]$
+            and
+            $n\in\left[1,N\right]$.
+
+        See Also
+        --------
+        * :meth:`switching_function()`.
+        """
+        pass
 class SparseUnitaryEvolver(UnitaryEvolver):
     r"""
     A class to store the diagonalised drift and control Hamiltonians with sparse
@@ -1152,6 +1488,7 @@ class SparseUnitaryEvolver(UnitaryEvolver):
         --------
         * :meth:`propagate_collection()`
         * :meth:`propagate_all()`
+        * :meth:`get_evolution()`
         """
         pass
     def propagate_collection(self,
@@ -1231,7 +1568,7 @@ class SparseUnitaryEvolver(UnitaryEvolver):
         -------
         NDArray[Shape[runtime_dim, number_of_states], complex128]
             The propagated state vectors, $\left(\psi_k(N\Delta t)\right)_k$.
-            
+
         Note
         ----
         This function is a wrapper around the C++ function
@@ -1241,6 +1578,7 @@ class SparseUnitaryEvolver(UnitaryEvolver):
         --------
         * :meth:`propagate()`
         * :meth:`propagate_all()`
+        * :meth:`get_evolution()`
         """
         pass
     def propagate_all(self,
@@ -1332,6 +1670,7 @@ class SparseUnitaryEvolver(UnitaryEvolver):
         --------
         * :meth:`propagate()`
         * :meth:`propagate_collection()`
+        * :meth:`get_evolution()`
         """
         pass
     def evolved_expectation_value(self,
@@ -1388,6 +1727,8 @@ class SparseUnitaryEvolver(UnitaryEvolver):
         modulated by the control amplitudes. The integration is performed using
         :meth:`propagate_all()`.
 
+        Parameters
+        ----------
         ctrl_amp : NDArray[Shape[time_steps, :attr:`length`], complex128]
             $\left(a_{ij}\right)$ The control amplitudes at each time step
             expressed as an $N\times\textrm{length}$ matrix where the element
@@ -1414,6 +1755,92 @@ class SparseUnitaryEvolver(UnitaryEvolver):
         See Also
         --------
         * :meth:`evolved_expectation_value()`
+        """
+        pass
+    def evolved_inner_product(self,
+                              ctrl_amp: np.ndarray[np.complex128],
+                              state: np.ndarray[np.complex128],
+                              dt: float,
+                              fixed_vector: np.ndarray[np.complex128]
+                             ) -> complex:
+        r"""
+        Calculates the real inner product of an evolved state vector with a
+        fixed vector. The evolved state vector is evolved under a control
+        Hamiltonian modulated by the control amplitudes. The integration is
+        performed using :meth:`propagate()`.
+
+        Parameters
+        ----------
+        ctrl_amp  : NDArray[Shape[time_steps, :attr:`length`], complex128]
+            $\left(a_{ij}\right)$ The control amplitudes at each time step
+            expressed as an $N\times\textrm{length}$ matrix where the element
+            $a_{ij}$ corresponds to the control amplitude of the $j$th control
+            Hamiltonian at the $i$th time step.
+        state : NDArray[Shape[runtime_dim], complex128]
+            $\left[\psi(0)\right]$ The state vector to propagate.
+        dt : float
+            ($\Delta t$) The time step to propagate by.
+        fixed_vector : NDArray[Shape[runtime_dim], complex128]
+            $(\xi)$ The fixed vector to calculate the expectation value of.
+
+        Returns
+        -------
+        complex
+            The inner product of the evolved state vector with the fixed vector,
+            $\sum_{i=1}^\texttt{dim}\xi_i\psi_i(N\Delta t)$.
+
+        Note
+        ----
+        This function is a wrapper around the C++ function
+        :cpp:func:`Suzuki_Trotter_Evolver::UnitaryEvolver::evolved_inner_product()`.
+
+        See Also
+        --------
+        * :meth:`evolved_inner_product_all()`
+        """
+        pass
+    def evolved_inner_product_all(self,
+                                  ctrl_amp: np.ndarray[np.complex128],
+                                  state: np.ndarray[np.complex128],
+                                  dt: float,
+                                  fixed_vector: np.ndarray[np.complex128]
+                                 ) -> np.ndarray[np.complex128]:
+        r"""
+        Calculates the real inner products of a time series of evolved state
+        vectors with a fixed vector. The evolved state vector is evolved under a
+        control Hamiltonian modulated by the control amplitudes. The integration
+        is performed using :meth:`propagate_all()``.
+
+        Parameters
+        ----------
+        ctrl_amp  : NDArray[Shape[time_steps, :attr:`length`], complex128]
+            $\left(a_{ij}\right)$ The control amplitudes at each time step
+            expressed as an $N\times\textrm{length}$ matrix where the element
+            $a_{ij}$ corresponds to the control amplitude of the $j$th control
+            Hamiltonian at the $i$th time step.
+        state : NDArray[Shape[runtime_dim], complex128]
+            $\left[\psi(0)\right]$ The state vector to propagate.
+        dt : float
+            ($\Delta t$) The time step to propagate by.
+        fixed_vector : NDArray[Shape[runtime_dim], complex128]
+            $(\xi)$ The fixed vector to calculate the expectation value of.
+
+        Returns
+        -------
+        NDArray[Shape[time_steps + 1], complex128]
+            The inner products of the evolved state vectors with the fixed
+            vector,
+            $\left(
+            \sum_{i=1}^\texttt{dim}\xi_i\psi_i(n\Delta t)\right)_{n=0}^N$.
+
+        Note
+        ----
+        This function is a wrapper around the C++ function
+        :cpp:func:`Suzuki_Trotter_Evolver::UnitaryEvolver::evolved_inner_product_all()`.
+
+        See Also
+        --------
+        * :meth:`evolved_inner_product()`.
         """
         pass
     def switching_function(self,
@@ -1483,10 +1910,223 @@ class SparseUnitaryEvolver(UnitaryEvolver):
             and
             $n\in\left[1,N\right]$.
 
+        See Also
+        --------
+        * :meth:`gate_switching_function()`.
+
         Note
         ----
         This function is a wrapper around the C++ function
         :cpp:func:`Suzuki_Trotter_Evolver::UnitaryEvolver::switching_function()`.
+        """
+        pass
+    def get_evolution(self,
+                      ctrl_amp: np.ndarray[np.complex128],
+                      dt: float
+                     ) -> np.ndarray[np.complex128]:
+        r"""
+        Computes the unitary corresponding to the evolution under the
+        differential equation
+        $$
+        \dot U=-iHU.
+        $$
+        The computation is performed using the first-order Suzuki-Trotter
+        expansion:     
+        $$
+        \begin{align}
+            U(N\Delta t)&=\prod_{i=1}^N\prod_{j=0}^{\textrm{length}}
+                e^{-ia_{ij}H_j\Delta t}+\mathcal E\\
+            &=\prod_{i=1}^N\prod_{j=0}^{\textrm{length}}
+                U_je^{-ia_{ij}D_j\Delta t}U_j^\dagger+\mathcal E.
+        \end{align}
+        $$
+        where
+        $a_{nj}\coloneqq a(n\Delta t)$,
+        we set
+        $a_{n0}=1$
+        for notational ease, and the additive error
+        $\mathcal E$
+        is
+        $$
+        \begin{align}
+        \mathcal E&=\mathcal O\left(
+            \Delta t^2\left[\sum_{i=1}^N\sum_{j=1}^{\textrm{length}}\dot a_{ij}
+            \norm{H_j}
+            +\sum_{i=1}^N\sum_{j,k=0}^{\textrm{length}}a_{ij}a_{ik}
+            \norm{[H_j,H_k]}\right]
+            \right)\\
+        &=\mathcal O\left(
+            N\Delta t^2\textrm{length}\left[\omega E+\alpha^2+E^2\right]
+            \right)
+        \end{align}
+        $$
+        where $\dot a_{nj}\coloneqq\dot a_j(n\Delta t)$ and
+        $$
+        \begin{align}
+            \omega&\coloneqq\max_{\substack{i\in\left[1,N\right]\\
+                j\in\left[1,\textrm{length}\right]}}\left|\dot a_{ij}\right|,\\
+            \alpha&\coloneqq\max_{\substack{i\in\left[1,N\right]\\
+                j\in\left[0,\textrm{length}\right]}}\left|a_{ij}\right|,\\
+            E&\coloneqq\max_{j\in\left[0,\textrm{length}\right]}\norm{H_j}.
+        \end{align}
+        $$
+        Note the error is quadratic in $\Delta t$ but linear in $N$. We can also
+        view this as being linear in $\Delta t$ and linear in total evolution
+        time $N\Delta t$. Additionally, by Nyquist's theorem this asymptotic
+        error scaling will not be achieved until the time step $\Delta t$ is
+        smaller than $\frac{1}{2\Omega}$ where $\Omega$ is the largest energy or
+        frequency in the system.
+
+        Parameters
+        ----------
+        ctrl_amp  : NDArray[Shape[time_steps, :attr:`length`], complex128]
+            $\left(a_{ij}\right)$ The control amplitudes at each time step
+            expressed as an $N\times\textrm{length}$ matrix where the element
+            $a_{ij}$ corresponds to the control amplitude of the $j$th control
+            Hamiltonian at the $i$th time step.
+        dt : float
+            ($\Delta t$) The time step to propagate by.
+
+        Returns
+        -------
+        NDArray[Shape[runtime_dim, runtime_dim], complex128]
+            The unitary corresponding to the evolution,
+            $U(N\Delta t)$.
+
+        Note
+        ----
+        This function is a wrapper around the C++ function
+        :cpp:func:`Suzuki_Trotter_Evolver::UnitaryEvolver::get_evolution()`.
+
+        See Also
+        --------
+        * :meth:`propagate()`
+        * :meth:`propagate_all()`
+        * :meth:`propagate_collection()`
+        """
+        pass
+    def evolved_gate_infidelity(self,
+                                ctrl_amp: np.ndarray[np.complex128],
+                                dt: float,
+                                target: np.ndarray[np.complex128]
+                               ) -> float:
+        r"""
+        Calculates the gate infidelity with respect to a target gate of the gate
+        produced by the control Hamiltonian modulated by the control amplitudes.
+        The integration is performed using
+        :meth:`get_evolution()`.
+
+        Parameters
+        ----------
+        ctrl_amp  : NDArray[Shape[time_steps, :attr:`length`], complex128]
+            $\left(a_{ij}\right)$ The control amplitudes at each time step
+            expressed as an $N\times\textrm{length}$ matrix where the element
+            $a_{ij}$ corresponds to the control amplitude of the $j$th control
+            Hamiltonian at the $i$th time step.
+        dt : float
+            ($\Delta t$) The time step to propagate by.
+        target : NDArray[Shape[runtime_dim, runtime_dim], complex128]
+            The target gate to calculate the infidelity with respect to.
+
+        Returns
+        -------
+        float
+            The gate infidelity with respect to the target gate:
+            $$
+            \mathcal I(U(N\Delta t), \texttt{target})
+            \coloneqq 1-\frac{
+            \left|\Tr\left[
+            \texttt{target}^\dagger\cdot U(N\Delta t)\right]\right|^2
+            +\texttt{dim}}{\texttt{dim}(\texttt{dim}+1)}.
+            $$
+
+        Note
+        ----
+        This function is a wrapper around the C++ function
+        :cpp:func:`Suzuki_Trotter_Evolver::UnitaryEvolver::evolved_gate_infidelity()`.
+
+        See Also
+        --------
+        * :func:`unitary_gate_infidelity()`.
+        """
+        pass
+    def gate_switching_function(self,
+                                ctrl_amp: np.ndarray[np.complex128],
+                                dt: float,
+                                target: np.ndarray[np.complex128]
+                               ) -> tuple[float, np.ndarray[np.float64]]:
+        r"""
+        Calculates the switching function for a Mayer problem with the gate
+        infidelity as the cost function. More precisely if the cost function is
+        $$
+        J\left[\vec a(t)\right]
+        \coloneqq\mathcal I(U\left[\vec a(t); T\right], \texttt{target})
+        \coloneqq 1-\frac{\left|\Tr\left[\texttt{target}^\dagger
+        \cdot U\left[\vec a(t); T\right]\right]\right|^2
+        +\texttt{dim}}{\texttt{dim}(\texttt{dim}+1)}.
+        $$
+        where $T=N\Delta t$, then the switching function is
+        $$
+        \begin{align}
+        &\phi_j(t)\coloneqq\frac{\delta J}{\delta a_j(t)}\\
+        &=\frac{2}{\texttt{dim}(\texttt{dim}+1)}\operatorname{Im}\left(
+        \Tr\left[U^\dagger(N\Delta t)\cdot\texttt{target}\right]
+        \Tr\left[\texttt{target}^\dagger
+        \cdot U(t\to T)H_j U[\vec a(t);t]\right]\right).
+        \end{align}
+        $$
+        Using the first-order Suzuki-Trotter expansion we can express the
+        switching function as
+        $$
+        \begin{align}
+            &\phi_j(n\Delta t)=\frac{1}{\Delta t}\pdv{J}{a_{nj}}\\
+            &=\!\frac{2}{\texttt{dim}(\texttt{dim}+1)}\operatorname{Im}
+                \!\left(
+                \Tr\!\left[U^\dagger(N\Delta t)\cdot\texttt{target}\right]
+                \vphantom{[\prod_{k=j}^{\textrm{length}}}\right.\\
+                &\left.\cdot\Tr\!\left[\texttt{target}^\dagger\!\cdot\!
+                \left[\prod_{i>n}^N\prod_{k=1}^{\textrm{length}}
+                e^{-ia_{ik}H_k\Delta t}\right]\!\!\!
+                \left[\prod_{k=j}^{\textrm{length}}
+                e^{-ia_{nk}H_k\Delta t}\right]\!H_j\!\!
+                \left[\prod_{k=0}^{j-1}
+                e^{-ia_{nk}H_k\Delta t}\right]
+                \! U(\left[n-1\right]\Delta t)\right]\right),
+        \end{align}
+        $$
+        where for numerical efficiency we replace
+        $e^{-ia_{ik}H_k\Delta t}$
+        with
+        $U_ke^{-ia_{ik}D_k\Delta t}U_k^\dagger$
+        as in :meth:`get_evolution()`.
+
+        Parameters
+        ----------
+        ctrl_amp  : NDArray[Shape[time_steps, :attr:`length`], complex128]
+            $\left(a_{ij}\right)$ The control amplitudes at each time step
+            expressed as an $N\times\textrm{length}$ matrix where the element
+            $a_{ij}$ corresponds to the control amplitude of the $j$th control
+            Hamiltonian at the $i$th time step.
+        dt : float
+            ($\Delta t$) The time step to propagate by.
+        target : NDArray[Shape[runtime_dim, runtime_dim], complex128]
+            The target gate to calculate the infidelity with respect to.
+
+        Returns
+        -------
+        tuple[float, NDArray[Shape[time_steps, :attr:`length`], float64]]
+            The gate infidelity,
+            $I(U\left[\vec a(t); T\right], \texttt{target})$ and
+            the switching function,
+            $\phi_j(n\Delta t)$
+            for all
+            $j\in\left[1,\textrm{length}\right]$
+            and
+            $n\in\left[1,N\right]$.
+
+        See Also
+        --------
+        * :meth:`switching_function()`.
         """
         pass
 

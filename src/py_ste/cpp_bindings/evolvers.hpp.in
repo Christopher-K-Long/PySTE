@@ -51,6 +51,20 @@ void add_attributes(py::class_<ste::UnitaryEvolver<n_ctrl, dim, Matrix>> &cls) {
             py::arg("state").noconvert(),
             py::arg("dt").noconvert(),
             py::arg("observable").noconvert())
+       .def("evolved_inner_product",
+            &T::evolved_inner_product,
+            py::return_value_policy::reference_internal,
+            py::arg("ctrl_amp").noconvert(),
+            py::arg("state").noconvert(),
+            py::arg("dt").noconvert(),
+            py::arg("fixed_vector").noconvert())
+       .def("evolved_inner_product_all",
+            &T::evolved_inner_product_all,
+            py::return_value_policy::reference_internal,
+            py::arg("ctrl_amp").noconvert(),
+            py::arg("state").noconvert(),
+            py::arg("dt").noconvert(),
+            py::arg("fixed_vector").noconvert())
        .def("switching_function",
             &T::switching_function,
             py::return_value_policy::reference_internal,
@@ -58,6 +72,23 @@ void add_attributes(py::class_<ste::UnitaryEvolver<n_ctrl, dim, Matrix>> &cls) {
             py::arg("state").noconvert(),
             py::arg("dt").noconvert(),
             py::arg("cost").noconvert())
+       .def("get_evolution",
+            &T::get_evolution,
+            py::return_value_policy::reference_internal,
+            py::arg("ctrl_amp").noconvert(),
+            py::arg("dt").noconvert())
+       .def("evolved_gate_infidelity",
+            &T::evolved_gate_infidelity,
+            py::return_value_policy::reference_internal,
+            py::arg("ctrl_amp").noconvert(),
+            py::arg("dt").noconvert(),
+            py::arg("target").noconvert())
+       .def("gate_switching_function",
+            &T::gate_switching_function,
+            py::return_value_policy::reference_internal,
+            py::arg("ctrl_amp").noconvert(),
+            py::arg("dt").noconvert(),
+            py::arg("target").noconvert())
        .def_property_readonly("n_ctrl", [](const py::object&) -> int { return n_ctrl; })
        .def_property_readonly("dim", [](const py::object&) -> int { return dim; })
        .def_property_readonly("dim_x_n_ctrl", [](const py::object&) -> int { return dim_x_n_ctrl; })
