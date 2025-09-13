@@ -770,7 +770,7 @@ class DenseUnitaryEvolver(UnitaryEvolver):
         dt : float
             ($\Delta t$) The time step to propagate by.
         fixed_vector : NDArray[Shape[runtime_dim], complex128]
-            $(\xi)$ The fixed vector to calculate the expectation value of.
+            $(\xi)$ The fixed vector to calculate the inner product with.
 
         Returns
         -------
@@ -812,7 +812,7 @@ class DenseUnitaryEvolver(UnitaryEvolver):
         dt : float
             ($\Delta t$) The time step to propagate by.
         fixed_vector : NDArray[Shape[runtime_dim], complex128]
-            $(\xi)$ The fixed vector to calculate the expectation value of.
+            $(\xi)$ The fixed vector to calculate the inner product with.
 
         Returns
         -------
@@ -1781,7 +1781,7 @@ class SparseUnitaryEvolver(UnitaryEvolver):
         dt : float
             ($\Delta t$) The time step to propagate by.
         fixed_vector : NDArray[Shape[runtime_dim], complex128]
-            $(\xi)$ The fixed vector to calculate the expectation value of.
+            $(\xi)$ The fixed vector to calculate the inner product with.
 
         Returns
         -------
@@ -1823,7 +1823,7 @@ class SparseUnitaryEvolver(UnitaryEvolver):
         dt : float
             ($\Delta t$) The time step to propagate by.
         fixed_vector : NDArray[Shape[runtime_dim], complex128]
-            $(\xi)$ The fixed vector to calculate the expectation value of.
+            $(\xi)$ The fixed vector to calculate the inner product with.
 
         Returns
         -------
