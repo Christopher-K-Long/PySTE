@@ -1,5 +1,5 @@
 # PySTE
-A Python package for evolving states under the Schrödinger equation using first-order Suzuki-Trotter and computing switching functions.
+A Python package for evolving unitaries and states under the Schrödinger equation using first-order Suzuki-Trotter and computing switching functions.
 
 [![Unit Tests](https://github.com/Christopher-K-Long/PySTE/actions/workflows/test-python-package.yml/badge.svg)](https://github.com/Christopher-K-Long/PySTE/actions/workflows/test-python-package.yml)
 
@@ -142,7 +142,7 @@ Source code can be found at: [https://github.com/Christopher-K-Long/PySTE](https
 
 ## Version and Changes
 
-The current version is [`1.0.1`](ChangeLog.md#release-101). Please see the [Change Log](ChangeLog.md) for more details. PySTE uses [semantic versioning](https://semver.org/).
+The current version is [`1.1.0`](ChangeLog.md#release-110). Please see the [Change Log](ChangeLog.md) for more details. PySTE uses [semantic versioning](https://semver.org/).
 
 ## Acknowledgements
 CKL would like to thank [Chris Hall](https://www.linkedin.com/in/chris-hall-1a15131) for useful discussions on the structure of the package.

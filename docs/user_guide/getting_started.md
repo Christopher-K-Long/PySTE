@@ -2,7 +2,7 @@
 
 ## What is PySTE
 
-PySTE is a Python wrapper around [Suzuki-Trotter-Evolver](https://github.com/Christopher-K-Long/Suzuki-Trotter-Evolver): a header-only library for evolving states under the Schrödinger equation,
+PySTE is a Python wrapper around [Suzuki-Trotter-Evolver](https://github.com/Christopher-K-Long/Suzuki-Trotter-Evolver): a header-only library for evolving unitaries and states under the Schrödinger equation,
 
 $$
 \dot\psi=-iH\psi,
