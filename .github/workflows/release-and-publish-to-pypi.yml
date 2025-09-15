@@ -151,7 +151,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/PySTE
+      url: https://pypi.org/p/Py-STE
     permissions:
       id-token: write  # IMPORTANT: mandatory for trusted publishing
 
