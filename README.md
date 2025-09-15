@@ -1,9 +1,11 @@
 # PySTE
 A Python package for evolving unitaries and states under the Schrödinger equation using first-order Suzuki-Trotter and computing switching functions.
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17116431.svg)](https://doi.org/10.5281/zenodo.17116431)
+
 [![Unit Tests](https://github.com/Christopher-K-Long/PySTE/actions/workflows/test-python-package.yml/badge.svg)](https://github.com/Christopher-K-Long/PySTE/actions/workflows/test-python-package.yml)
 
-PySTE stands for Python Suzuki-Trotter-Evolver and is a Python interface to the C++ header-only library [https://github.com/Christopher-K-Long/Suzuki-Trotter-Evolver](https://github.com/Christopher-K-Long/Suzuki-Trotter-Evolver).
+PySTE stands for Python Suzuki-Trotter-Evolver and is a Python interface to the C++ header-only library Suzuki-Trotter-Evolver: [https://github.com/Christopher-K-Long/Suzuki-Trotter-Evolver](https://github.com/Christopher-K-Long/Suzuki-Trotter-Evolver) ([doi:10.5281/zenodo.17116329](https://doi.org/10.5281/zenodo.17116329)).
 
 While PySTE has limited functionality in comparison to more fleshed out quantum simulation packages such as [QuTiP](https://qutip.org), it is faster at some tasks:
 
