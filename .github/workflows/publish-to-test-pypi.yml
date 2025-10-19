@@ -10,7 +10,7 @@ jobs:
         CIBW_CONFIG_SETTINGS: '"cmake.define.NCTRL_FIXED_SIZES=OFF" "cmake.define.DIM_FIXED_SIZES=OFF"'
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-13, macos-latest]
+        os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, windows-11-arm, macos-15-intel, macos-latest]
 
     steps:
     - uses: actions/checkout@v4
