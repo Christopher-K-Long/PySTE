@@ -4,7 +4,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "py-ste"
-version = "1.1.0"
+version = "1.1.1"
 authors = [
   { name="Christopher K. Long", email="ckl45@cam.ac.uk" },
   { name="Crispin H. W. Barnes"},

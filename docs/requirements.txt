@@ -1,4 +1,4 @@
-py-ste == 1.1.0 # Version to be documented
+py-ste == 1.1.1 # Version to be documented
 
 furo
 cffconvert
