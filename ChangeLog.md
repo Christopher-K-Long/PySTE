@@ -13,6 +13,7 @@
 - Corrected author names
 - Added additional package classifiers
 - Added version pins to `README.md`
+- Corrected build from source instructions in `README.md`
 
 ## Release 1.1.0
 
