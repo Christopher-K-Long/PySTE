@@ -45,7 +45,7 @@ Currently, the pre-built wheels only include the dynamic evolvers. For the faste
 ### Requirements
 
 Requires:
-- [NumPy](https://numpy.org/)
+- [NumPy](https://numpy.org/) (>= 1.21, < 3)
 
 Note that [Suzuki-Trotter-Evolver](https://github.com/Christopher-K-Long/Suzuki-Trotter-Evolver) and [Eigen3](https://eigen.tuxfamily.org/) are packaged with PySTE and so do not need to be installed separately.
 
@@ -62,7 +62,7 @@ conda install -c conda-forge libstdcxx-ng
 
 - [toml](https://github.com/uiri/toml)
 - [PyYAML](https://pyyaml.org/)
-- [SciPy](https://scipy.org/)
+- [SciPy](https://scipy.org/) (== 1.*)
 
 #### Additional requirements for benchmarking
 
