@@ -108,17 +108,17 @@ The maximum power when using ``--config-setting="cmake.define.DIM_FIXED_SIZES=PO
 - ``--config-setting="cmake.define.BASE_DIM=2"``\
 The base of the powers when using ``--config-setting="cmake.define.DIM_FIXED_SIZES=POWER"``. A positive integer, by default 2.
 
-
 For example,
 ```bash
-pip install py-ste \
+pip install --no-binary py-ste py-ste \
+--no-cache-dir \
 --config-setting="cmake.define.NCTRL_FIXED_SIZES=SINGLE" \
 --config-setting="cmake.define.NCTRL=2" \
 --config-setting="cmake.define.DIM_FIXED_SIZES=POWER" \
 --config-setting="cmake.define.MAX_POWER_DIM=3" \
 --verbose
 ```
-will build PySTE from source and optimises evolvers at compile time with 2 control Hamiltonians acting on a vector space of dimensions 2, 4, and 8. Increasing the number of optimised evolvers increases the compile time. The ``--verbose`` flag allows the progress of the build to be seen. This is useful as the builds can often take a long time.
+will build PySTE from source and optimises evolvers at compile time with 2 control Hamiltonians acting on a vector space of dimensions 2, 4, and 8. Increasing the number of optimised evolvers increases the compile time. The ``--no-binary py-ste`` flag instructs ``pip`` to build ``py-ste`` from source and the following ``py-ste`` instructs ``pip`` that ``py-ste`` is one of the packages to collect (indeed the only package). The ``--no-cache-dir`` flag ensures that a cached ``.whl`` file is not used instead and the package is actually built from source. Finally, the ``--verbose`` flag allows the progress of the build to be seen. This is useful as the builds can often take a long time.
 
 *Note building from source requires approximately 16GB of RAM.*
 
