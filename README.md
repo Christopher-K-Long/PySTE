@@ -46,6 +46,8 @@ Currently, the pre-built wheels only include the dynamic evolvers. For the faste
 
 Requires:
 - [NumPy](https://numpy.org/) (>= 1.21, < 3)
+- [Suzuki-Trotter-Evolver](https://github.com/Christopher-K-Long/Suzuki-Trotter-Evolver) (== 1.1.0, packaged with PySTE)
+- [Eigen3](https://eigen.tuxfamily.org/) (== 3.4.90, packaged with PySTE)
 
 Note that [Suzuki-Trotter-Evolver](https://github.com/Christopher-K-Long/Suzuki-Trotter-Evolver) and [Eigen3](https://eigen.tuxfamily.org/) are packaged with PySTE and so do not need to be installed separately.
 
