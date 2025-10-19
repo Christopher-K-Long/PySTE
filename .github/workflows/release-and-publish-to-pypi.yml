@@ -126,7 +126,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ github.token }}
       run: |
-        RELEASE_NOTES=$(cat ChangeLog.md | grep -Pzo '(?<=##\sRelease\s${{ steps.version.outputs.VERSION }})[\S\s]*?(?=##|$)' | tr -d '\0')
+        RELEASE_NOTES=$(cat ChangeLog.md | grep -Pzo '(?<=##\sRelease\s${{ steps.version.outputs.VERSION }})[\S\s]*?(?=##\sRelease|$)' | tr -d '\0')
         if [ -z "$RELEASE_NOTES" ]; then
             echo "No release notes found."
             exit 1
