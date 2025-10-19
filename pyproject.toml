@@ -4,12 +4,14 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "py-ste"
-version = "1.1.0"
+version = "1.1.1"
 authors = [
-  { name="Christopher_K._Long", email="ckl45@cam.ac.uk" },
+  { name="Christopher K. Long", email="ckl45@cam.ac.uk" },
+  { name="Crispin H. W. Barnes"},
+  { name="Normann Mertig"}
 ]
 maintainers = [
-  { name="Christopher_K._Long", email="ckl45@cam.ac.uk" },
+  { name="Christopher K. Long", email="ckl45@cam.ac.uk" },
 ]
 description = "A Python package for evolving unitaries and states under the Schrödinger equation using first-order Suzuki-Trotter and computing switching functions."
 keywords = ["evolver", "evolution", "suzuki", "trotter", "simulation", "intergrator", "integration", "unitary", "quantum"]
@@ -17,11 +19,23 @@ readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
     "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Quantum Computing"
 ]
 license = "Apache-2.0"
 license-files = ["LICEN[CS]E*"]
-dependencies = ["numpy"]
+dependencies = ["numpy >= 1.21, < 3"] # Major version change will likely indicate an ABI break. See https://numpy.org/doc/stable/dev/depending_on_numpy.html
 
 [project.urls]
 Homepage = "https://github.com/Christopher-K-Long/PySTE"

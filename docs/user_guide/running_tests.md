@@ -18,6 +18,7 @@ from the root directory of PySTE to execute the tests for your installed python 
 
 To execute the tests with [pytest](https://docs.pytest.org) you will need to set up a python environment with PySTE and the packages in `texts/requirements.txt`. For example, you can run
 ```bash
+pip install pytest
 pip install ./
 pip install -r tests/requirements.txt
 ```

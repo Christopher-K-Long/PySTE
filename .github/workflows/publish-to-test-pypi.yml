@@ -10,7 +10,7 @@ jobs:
         CIBW_CONFIG_SETTINGS: '"cmake.define.NCTRL_FIXED_SIZES=OFF" "cmake.define.DIM_FIXED_SIZES=OFF"'
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-13, macos-latest]
+        os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, windows-11-arm, macos-15-intel, macos-latest]
 
     steps:
     - uses: actions/checkout@v4
@@ -22,7 +22,7 @@ jobs:
       with:
         python-version: "3.x"
     - name: Install cibuildwheel
-      run: python -m pip install cibuildwheel==3.0.0
+      run: python -m pip install cibuildwheel==3.2.1
     - name: Build wheels
       run: python -m cibuildwheel --output-dir dist
     - uses: actions/upload-artifact@v4

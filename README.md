@@ -45,7 +45,9 @@ Currently, the pre-built wheels only include the dynamic evolvers. For the faste
 ### Requirements
 
 Requires:
-- [NumPy](https://numpy.org/)
+- [NumPy](https://numpy.org/) (>= 1.21, < 3)
+- [Suzuki-Trotter-Evolver](https://github.com/Christopher-K-Long/Suzuki-Trotter-Evolver) (== 1.1.0, packaged with PySTE)
+- [Eigen3](https://eigen.tuxfamily.org/) (== 3.4.90, packaged with PySTE)
 
 Note that [Suzuki-Trotter-Evolver](https://github.com/Christopher-K-Long/Suzuki-Trotter-Evolver) and [Eigen3](https://eigen.tuxfamily.org/) are packaged with PySTE and so do not need to be installed separately.
 
@@ -62,7 +64,7 @@ conda install -c conda-forge libstdcxx-ng
 
 - [toml](https://github.com/uiri/toml)
 - [PyYAML](https://pyyaml.org/)
-- [SciPy](https://scipy.org/)
+- [SciPy](https://scipy.org/) (== 1.*)
 
 #### Additional requirements for benchmarking
 
@@ -106,17 +108,17 @@ The maximum power when using ``--config-setting="cmake.define.DIM_FIXED_SIZES=PO
 - ``--config-setting="cmake.define.BASE_DIM=2"``\
 The base of the powers when using ``--config-setting="cmake.define.DIM_FIXED_SIZES=POWER"``. A positive integer, by default 2.
 
-
 For example,
 ```bash
-pip install py-ste \
+pip install --no-binary py-ste py-ste \
+--no-cache-dir \
 --config-setting="cmake.define.NCTRL_FIXED_SIZES=SINGLE" \
 --config-setting="cmake.define.NCTRL=2" \
 --config-setting="cmake.define.DIM_FIXED_SIZES=POWER" \
 --config-setting="cmake.define.MAX_POWER_DIM=3" \
 --verbose
 ```
-will build PySTE from source and optimises evolvers at compile time with 2 control Hamiltonians acting on a vector space of dimensions 2, 4, and 8. Increasing the number of optimised evolvers increases the compile time. The ``--verbose`` flag allows the progress of the build to be seen. This is useful as the builds can often take a long time.
+will build PySTE from source and optimises evolvers at compile time with 2 control Hamiltonians acting on a vector space of dimensions 2, 4, and 8. Increasing the number of optimised evolvers increases the compile time. The ``--no-binary py-ste`` flag instructs ``pip`` to build ``py-ste`` from source and the following ``py-ste`` instructs ``pip`` that ``py-ste`` is one of the packages to collect (indeed the only package). The ``--no-cache-dir`` flag ensures that a cached ``.whl`` file is not used instead and the package is actually built from source. Finally, the ``--verbose`` flag allows the progress of the build to be seen. This is useful as the builds can often take a long time.
 
 *Note building from source requires approximately 16GB of RAM.*
 
@@ -144,7 +146,7 @@ Source code can be found at: [https://github.com/Christopher-K-Long/PySTE](https
 
 ## Version and Changes
 
-The current version is [`1.1.0`](ChangeLog.md#release-110). Please see the [Change Log](ChangeLog.md) for more details. PySTE uses [semantic versioning](https://semver.org/).
+The current version is [`1.1.1`](ChangeLog.md#release-111). Please see the [Change Log](ChangeLog.md) for more details. PySTE uses [semantic versioning](https://semver.org/).
 
 ## Acknowledgements
 CKL would like to thank [Chris Hall](https://www.linkedin.com/in/chris-hall-1a15131) for useful discussions on the structure of the package.
