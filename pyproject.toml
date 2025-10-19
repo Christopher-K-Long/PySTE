@@ -6,10 +6,12 @@ build-backend = "scikit_build_core.build"
 name = "py-ste"
 version = "1.1.0"
 authors = [
-  { name="Christopher_K._Long", email="ckl45@cam.ac.uk" },
+  { name="Christopher K. Long", email="ckl45@cam.ac.uk" },
+  { name="Crispin H. W. Barnes"},
+  { name="Normann Mertig"}
 ]
 maintainers = [
-  { name="Christopher_K._Long", email="ckl45@cam.ac.uk" },
+  { name="Christopher K. Long", email="ckl45@cam.ac.uk" },
 ]
 description = "A Python package for evolving unitaries and states under the Schrödinger equation using first-order Suzuki-Trotter and computing switching functions."
 keywords = ["evolver", "evolution", "suzuki", "trotter", "simulation", "intergrator", "integration", "unitary", "quantum"]
