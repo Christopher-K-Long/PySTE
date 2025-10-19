@@ -1,5 +1,19 @@
 # [PySTE](README.md) Change Log
 
+## Release 1.1.1
+
+### Bug fixes
+- Fixed bug in which the [NumPy](https://numpy.org/) dependency was not version pinned to >= 1.21, < 3.
+
+### Continuous Integration (CI) updates
+- Added CI build support for Python 3.14
+- Updated host runner images after GitHub deprecated `macos-13`
+
+### Updated Metadata
+- Corrected author names
+- Added additional package classifiers
+- Added version pins to `README.md`
+
 ## Release 1.1.0
 
 - Added `get_evolution()` to generate the unitary describing the systems evolution.
