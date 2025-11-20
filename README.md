@@ -31,12 +31,13 @@ Current support:
 
 |                    | macOS Intel | macOS Apple Silicon | Windows 64bit | Windows 32bit | Windows Arm64 | manylinux<br/>musllinux x86_64 | Other Linux |
 |--------------------|-----|-----|-----|------|-----|-----|-----|
-| CPython 3.8        | ✅ | ✅  | ✅  | ✅  | Build from source | ✅ | Build from source |
-| CPython 3.9        | ✅ | ✅  | ✅  | ✅  | Build from source | ✅ | Build from source |
-| CPython 3.10       | ✅ | ✅  | ✅  | ✅  | Build from source | ✅ | Build from source |
-| CPython 3.11       | ✅ | ✅  | ✅  | ✅  | Build from source | ✅ | Build from source |
-| CPython 3.12       | ✅ | ✅  | ✅  | ✅  | Build from source | ✅ | Build from source |
-| CPython 3.13       | ✅ | ✅  | ✅  | ✅  | Build from source | ✅ | Build from source |
+| CPython 3.8        | ✅ | ✅  | ✅  | ✅  | ✅ | ✅ | Build from source |
+| CPython 3.9        | ✅ | ✅  | ✅  | ✅  | ✅ | ✅ | Build from source |
+| CPython 3.10       | ✅ | ✅  | ✅  | ✅  | ✅ | ✅ | Build from source |
+| CPython 3.11       | ✅ | ✅  | ✅  | ✅  | ✅ | ✅ | Build from source |
+| CPython 3.12       | ✅ | ✅  | ✅  | ✅  | ✅ | ✅ | Build from source |
+| CPython 3.13       | ✅ | ✅  | ✅  | ✅  | ✅ | ✅ | Build from source |
+| CPython 3.14       | ✅ | ✅  | ✅  | ✅  | ✅ | ✅ | Build from source |
 
 Currently, the pre-built wheels only include the dynamic evolvers. For the faster static evolvers please build from source.
 
