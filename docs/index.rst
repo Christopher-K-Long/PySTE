@@ -21,4 +21,7 @@ PySTE documentation
     citation/include_citation
     include_license
     GitHub <https://github.com/Christopher-K-Long/PySTE>
+    GitLab (mirror) <https://gitlab.com/Christopher-K-Long/PySTE>
     PyPI <https://pypi.org/project/Py-STE>
+    doi:10.5281/zenodo.17116431 <https://doi.org/10.5281/zenodo.17116431>
+    Archive <https://archive.softwareheritage.org/swh:1:dir:508bd76667d9f26712852bbdc31d87d44b72bfc5>

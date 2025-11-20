@@ -1,9 +1,7 @@
 # PySTE
 A Python package for evolving unitaries and states under the Schrödinger equation using first-order Suzuki-Trotter and computing switching functions.
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17116431.svg)](https://doi.org/10.5281/zenodo.17116431)
-
-[![Unit Tests](https://github.com/Christopher-K-Long/PySTE/actions/workflows/test-python-package.yml/badge.svg)](https://github.com/Christopher-K-Long/PySTE/actions/workflows/test-python-package.yml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17116431.svg)](https://doi.org/10.5281/zenodo.17116431) [![SWH](https://archive.softwareheritage.org/badge/origin/https://doi.org/10.5281/zenodo.17116431/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://doi.org/10.5281/zenodo.17116431) [![Unit Tests](https://github.com/Christopher-K-Long/PySTE/actions/workflows/test-python-package.yml/badge.svg)](https://github.com/Christopher-K-Long/PySTE/actions/workflows/test-python-package.yml)
 
 PySTE stands for Python Suzuki-Trotter-Evolver and is a Python interface to the C++ header-only library Suzuki-Trotter-Evolver: [https://github.com/Christopher-K-Long/Suzuki-Trotter-Evolver](https://github.com/Christopher-K-Long/Suzuki-Trotter-Evolver) ([doi:10.5281/zenodo.17116329](https://doi.org/10.5281/zenodo.17116329)).
 
@@ -138,11 +136,17 @@ git submodule update --init --recursive
 
 ## Documentation
 
-Documentation including worked examples can be found at: [https://PySTE.readthedocs.io](https://PySTE.readthedocs.io)
+Documentation, including worked examples, can be found at: [https://PySTE.readthedocs.io](https://PySTE.readthedocs.io)
 
 ## Source Code
 
 Source code can be found at: [https://github.com/Christopher-K-Long/PySTE](https://github.com/Christopher-K-Long/PySTE)
+
+A mirror can be found at: [https://gitlab.com/Christopher-K-Long/PySTE](https://gitlab.com/Christopher-K-Long/PySTE)
+
+Please submit all [pull requests](https://github.com/Christopher-K-Long/PySTE/pulls), [issues](https://github.com/Christopher-K-Long/PySTE/issues), [discussions](https://github.com/Christopher-K-Long/PySTE/discussions), and [vulnerability reports](https://github.com/Christopher-K-Long/PySTE/security) to the [GitHub](https://github.com/Christopher-K-Long/PySTE) repository.
+
+Releases from this repository are assigned DOIs and  can be found at [https://doi.org/10.5281/zenodo.17116431](https://doi.org/10.5281/zenodo.17116431). The DOI for all releases is [10.5281/zenodo.17116431](https://doi.org/10.5281/zenodo.17116431). Additionally, the releases are archived to [https://archive.softwareheritage.org/swh:1:dir:508bd76667d9f26712852bbdc31d87d44b72bfc5](https://archive.softwareheritage.org/swh:1:dir:508bd76667d9f26712852bbdc31d87d44b72bfc5).
 
 ## Version and Changes
 
