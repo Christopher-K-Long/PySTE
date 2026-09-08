@@ -8,6 +8,16 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
         CIBW_CONFIG_SETTINGS: '"cmake.define.NCTRL_FIXED_SIZES=OFF" "cmake.define.DIM_FIXED_SIZES=OFF"'
+        # AppleClang ships no OpenMP runtime, so find_package(OpenMP) fails and
+        #   the wheel would silently be built without multithreading. Homebrew's
+        #   libomp provides it and delocate bundles it into the wheel.
+        CIBW_BEFORE_ALL_MACOS: brew install libomp
+        CIBW_ENVIRONMENT_MACOS: OpenMP_ROOT=$(brew --prefix libomp)
+        # Linux (manylinux/GCC) and Windows (MSVC /openmp) already provide
+        #   OpenMP. Run the multithreading tests on every wheel so a missing
+        #   OpenMP is caught here rather than by users.
+        CIBW_TEST_REQUIRES: pytest
+        CIBW_TEST_COMMAND: pytest {project}/tests/test_multithreading.py
     strategy:
       matrix:
         os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, windows-11-arm, macos-15-intel, macos-latest]
