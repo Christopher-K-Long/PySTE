@@ -8,16 +8,18 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
         CIBW_CONFIG_SETTINGS: '"cmake.define.NCTRL_FIXED_SIZES=OFF" "cmake.define.DIM_FIXED_SIZES=OFF"'
-        # AppleClang ships no OpenMP runtime, so find_package(OpenMP) fails and
-        #   the wheel would silently be built without multithreading. Homebrew's
-        #   libomp provides it and delocate bundles it into the wheel.
-        CIBW_BEFORE_ALL_MACOS: brew install libomp
-        CIBW_ENVIRONMENT_MACOS: OpenMP_ROOT=$(brew --prefix libomp)
-        # Linux (manylinux/GCC) and Windows (MSVC /openmp) already provide
-        #   OpenMP. Run the multithreading tests on every wheel so a missing
-        #   OpenMP is caught here rather than by users.
-        CIBW_TEST_REQUIRES: pytest
-        CIBW_TEST_COMMAND: pytest {project}/tests --ignore=tests/test_build.py
+        CIBW_BEFORE_ALL_MACOS: |
+          if [ "$(uname -m)" = "arm64" ]; then
+            URL="https://anaconda.org/conda-forge/llvm-openmp/11.1.0/download/osx-arm64/llvm-openmp-11.1.0-hf3c4609_1.tar.bz2"
+          else
+            URL="https://anaconda.org/conda-forge/llvm-openmp/11.1.0/download/osx-64/llvm-openmp-11.1.0-hda6cdc1_1.tar.bz2"
+          fi
+          curl -L -o /tmp/libomp.tar.bz2 "$URL"
+          mkdir -p "$HOME/libomp"
+          tar -xjf /tmp/libomp.tar.bz2 -C "$HOME/libomp"
+        CIBW_ENVIRONMENT_MACOS: OpenMP_ROOT=$HOME/libomp
+        CIBW_TEST_REQUIRES: pytest toml pyyaml scipy numpy
+        CIBW_TEST_COMMAND: pytest {project}/tests --ignore={project}/tests/test_build.py
     strategy:
       matrix:
         os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, windows-11-arm, macos-15-intel, macos-latest]
