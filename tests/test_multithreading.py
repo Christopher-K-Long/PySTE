@@ -30,9 +30,9 @@ def test_get_threads_initial():
     assert py_ste.get_threads() == 1
 
 def test_get_and_set_threads():
+    import py_ste
     original = py_ste.get_threads()
     try:
-        import py_ste
         assert py_ste.get_threads() == 1
         py_ste.set_threads(2)
         assert py_ste.get_threads() == 2
