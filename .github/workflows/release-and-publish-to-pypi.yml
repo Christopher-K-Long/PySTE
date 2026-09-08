@@ -45,7 +45,9 @@ jobs:
           curl -L -o /tmp/libomp.tar.bz2 "$URL"
           mkdir -p "$HOME/libomp"
           tar -xjf /tmp/libomp.tar.bz2 -C "$HOME/libomp"
-        CIBW_ENVIRONMENT_MACOS: OpenMP_ROOT=$HOME/libomp LDFLAGS="-Wl,-rpath,$HOME/libomp/lib"
+          install_name_tool -id "$HOME/libomp/lib/libomp.dylib" "$HOME/libomp/lib/libomp.dylib"
+          codesign -s - -f "$HOME/libomp/lib/libomp.dylib"
+        CIBW_ENVIRONMENT_MACOS: OpenMP_ROOT=$HOME/libomp
         CIBW_BEFORE_BUILD_WINDOWS: pip install delvewheel
         CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: delvewheel repair -w {dest_dir} -v {wheel}
         CIBW_TEST_REQUIRES: pytest toml pyyaml scipy numpy
