@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15...3.29)
+cmake_minimum_required(VERSION 3.19...3.29)
 project(PySTE LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 
