@@ -1,7 +1,8 @@
 [submodule "dependencies/Suzuki-Trotter-Evolver"]
-	path = dependencies/Suzuki-Trotter-Evolver
-	url = https://github.com/Christopher-K-Long/Suzuki-Trotter-Evolver
-	branch = release-v1.1.2
+    path = dependencies/Suzuki-Trotter-Evolver
+    url = https://github.com/Christopher-K-Long/Suzuki-Trotter-Evolver
+    branch = release-v1.1.2
 [submodule "dependencies/eigen"]
-	path = dependencies/eigen
-	url = https://gitlab.com/libeigen/eigen
+    path = dependencies/eigen
+    url = https://gitlab.com/libeigen/eigen
+    branch = 5.0
