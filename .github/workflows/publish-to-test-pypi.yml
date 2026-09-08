@@ -8,6 +8,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
         CIBW_CONFIG_SETTINGS: '"cmake.define.NCTRL_FIXED_SIZES=OFF" "cmake.define.DIM_FIXED_SIZES=OFF"'
+        # NumPy has never published a win_arm64 wheel below cp311, so these
+        #   wheels could not be installed by anyone.
+        CIBW_SKIP: cp38-win_arm64 cp39-win_arm64 cp310-win_arm64
         CIBW_BEFORE_ALL_MACOS: |
           if [ "$(uname -m)" = "arm64" ]; then
             URL="https://anaconda.org/conda-forge/llvm-openmp/20.1.1/download/osx-arm64/llvm-openmp-20.1.1-hdb05f8b_1.conda"
