@@ -6,6 +6,7 @@
     - Expanded support for [Eigen](https://eigen.tuxfamily.org/) versions to `>=3.4` and `<6`
     - Changed sparse matrices to row major to enable parallelization sparse–dense matrix products
 - Changed CI to generate pre-built wheels with OpenMP support
+- Removed pre-built wheels for `win_arm64` below `cp311` because [NumPy](https://numpy.org/) does not provide pre-built wheels for these.
 - Updated the GitHub actions:
     - `actions/checkout@v4` -> `actions/checkout@v7`
     - `actions/setup-python@v5` -> `actions/setup-python@v6`
