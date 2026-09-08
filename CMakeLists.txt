@@ -59,17 +59,32 @@ endif()
 set(PYBIND11_FINDPYTHON ON)
 find_package(pybind11 CONFIG REQUIRED)
 find_package(OpenMP)
-find_package(Eigen3 3.3 NO_MODULE)
-if (NOT TARGET Eigen3::Eigen)
-    message("Eigen3 not found. Installing Eigen3 from submodule:")
-    execute_process(COMMAND cmake -S dependencies/eigen -B dependencies/eigen/build
-                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-    execute_process(COMMAND cmake --build dependencies/eigen/build --target install
-                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-    find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+
+# The version range must match the range Suzuki-Trotter-Evolver requires so
+#   that the find_package() it performs cannot pick up a different Eigen.
+find_package(Eigen3 3.4...<6 NO_MODULE)
+if (NOT Eigen3_FOUND)
+    message(STATUS "Eigen not found. Installing Eigen from submodule:")
+    set(EIGEN_SUBMODULE_DIR ${CMAKE_CURRENT_BINARY_DIR}/dependencies/eigen)
+    execute_process(COMMAND ${CMAKE_COMMAND}
+                            -S ${CMAKE_CURRENT_SOURCE_DIR}/dependencies/eigen
+                            -B ${EIGEN_SUBMODULE_DIR}/build
+                            -DCMAKE_INSTALL_PREFIX=${EIGEN_SUBMODULE_DIR}/install
+                            -DEIGEN_BUILD_TESTING=OFF
+                            -DEIGEN_BUILD_DOC=OFF
+                            -DEIGEN_BUILD_DEMOS=OFF
+                            -DEIGEN_BUILD_BLAS=OFF
+                            -DEIGEN_BUILD_LAPACK=OFF
+                    COMMAND_ERROR_IS_FATAL ANY)
+    execute_process(COMMAND ${CMAKE_COMMAND}
+                            --build ${EIGEN_SUBMODULE_DIR}/build
+                            --target install
+                    COMMAND_ERROR_IS_FATAL ANY)
+    list(APPEND CMAKE_PREFIX_PATH ${EIGEN_SUBMODULE_DIR}/install)
+    find_package(Eigen3 3.4...<6 REQUIRED NO_MODULE)
 endif()
+message(STATUS "Using Eigen ${Eigen3_VERSION} from ${Eigen3_DIR}")
 add_subdirectory(dependencies/Suzuki-Trotter-Evolver)
-add_subdirectory(dependencies/eigen)
 
 macro(configure)
     # Set variables for configuration
@@ -152,6 +167,12 @@ set(PYBIND_SRC ${PYBIND_SRC}
 
 pybind11_add_module(evolvers ${PYBIND_SRC})
 
-target_link_libraries(evolvers INTERFACE Eigen3::Eigen)
-target_link_libraries(evolvers PUBLIC  Suzuki-Trotter-Evolver)
+target_link_libraries(evolvers PRIVATE Eigen3::Eigen Suzuki-Trotter-Evolver)
+if(OpenMP_CXX_FOUND)
+    target_link_libraries(evolvers PRIVATE OpenMP::OpenMP_CXX)
+else()
+    message(WARNING "OpenMP not found. PySTE will be built without "
+                    "multithreading support: set_threads() will have no "
+                    "effect and get_threads() will always return 1.")
+endif()
 install(TARGETS evolvers DESTINATION ./py_ste)
