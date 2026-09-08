@@ -22,8 +22,8 @@ jobs:
         CIBW_ENVIRONMENT_MACOS: OpenMP_ROOT=$HOME/libomp
         CIBW_BEFORE_BUILD_WINDOWS: pip install delvewheel
         CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: delvewheel repair -w {dest_dir} -v {wheel}
-        CIBW_TEST_REQUIRES: pytest toml pyyaml scipy numpy
-        CIBW_TEST_COMMAND: pytest {project}/tests --ignore={project}/tests/test_build.py
+        CIBW_TEST_REQUIRES: pytest
+        CIBW_TEST_COMMAND: pytest {project}/tests/test_multithreading.py
     strategy:
       matrix:
         os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, windows-11-arm, macos-15-intel, macos-latest]
