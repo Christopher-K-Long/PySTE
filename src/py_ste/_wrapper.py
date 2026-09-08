@@ -1,7 +1,6 @@
 import numpy as np
 from numpy.typing import ArrayLike
-# import os
-# os.environ["OMP_NUM_THREADS"] = "2"
+
 from . import evolvers
 
 def get_unitary_evolver(drift_hamiltonian: ArrayLike,
