@@ -38,16 +38,18 @@ jobs:
         CIBW_CONFIG_SETTINGS: '"cmake.define.NCTRL_FIXED_SIZES=OFF" "cmake.define.DIM_FIXED_SIZES=OFF"'
         CIBW_BEFORE_ALL_MACOS: |
           if [ "$(uname -m)" = "arm64" ]; then
-            URL="https://anaconda.org/conda-forge/llvm-openmp/11.1.0/download/osx-arm64/llvm-openmp-11.1.0-hf3c4609_1.tar.bz2"
+            URL="https://anaconda.org/conda-forge/llvm-openmp/20.1.1/download/osx-arm64/llvm-openmp-20.1.1-hdb05f8b_1.conda"
           else
-            URL="https://anaconda.org/conda-forge/llvm-openmp/11.1.0/download/osx-64/llvm-openmp-11.1.0-hda6cdc1_1.tar.bz2"
+            URL="https://anaconda.org/conda-forge/llvm-openmp/20.1.1/download/osx-64/llvm-openmp-20.1.1-ha54dae1_1.conda"
           fi
-          curl -L -o /tmp/libomp.tar.bz2 "$URL"
-          mkdir -p "$HOME/libomp"
-          tar -xjf /tmp/libomp.tar.bz2 -C "$HOME/libomp"
+          curl -L -o /tmp/libomp.conda "$URL"
+          rm -rf /tmp/libomp-pkg
+          mkdir -p /tmp/libomp-pkg "$HOME/libomp"
+          unzip -q -o /tmp/libomp.conda -d /tmp/libomp-pkg
+          tar -xf /tmp/libomp-pkg/pkg-*.tar.zst -C "$HOME/libomp"
           install_name_tool -id "$HOME/libomp/lib/libomp.dylib" "$HOME/libomp/lib/libomp.dylib"
           codesign -s - -f "$HOME/libomp/lib/libomp.dylib"
-        CIBW_ENVIRONMENT_MACOS: OpenMP_ROOT=$HOME/libomp
+        CIBW_ENVIRONMENT_MACOS: OpenMP_ROOT=$HOME/libomp MACOSX_DEPLOYMENT_TARGET=${{ matrix.os == 'macos-15-intel' && '10.13' || '11.0' }}
         CIBW_BEFORE_BUILD_WINDOWS: pip install delvewheel
         CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: delvewheel repair -w {dest_dir} -v {wheel}
         CIBW_TEST_REQUIRES: pytest
