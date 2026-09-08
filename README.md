@@ -151,7 +151,7 @@ Releases from this repository are assigned DOIs and  can be found at [https://do
 
 ## Version and Changes
 
-The current version is [`1.1.1`](ChangeLog.md#release-111). Please see the [Change Log](ChangeLog.md) for more details. PySTE uses [semantic versioning](https://semver.org/).
+The current version is [`1.1.2`](ChangeLog.md#release-112). Please see the [Change Log](ChangeLog.md) for more details. PySTE uses [semantic versioning](https://semver.org/).
 
 ## Acknowledgements
 CKL would like to thank [Chris Hall](https://www.linkedin.com/in/chris-hall-1a15131) for useful discussions on the structure of the package.

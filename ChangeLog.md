@@ -1,5 +1,10 @@
 # [PySTE](README.md) Change Log
 
+## Release 1.1.2
+
+- Expanded support for [Eigen](https://eigen.tuxfamily.org/) versions to `>=3.4` and `<6`
+- Changed sparse matrices to row major to enable parallelization sparse–dense matrix products
+
 ## Release 1.1.1
 
 ### Bug fixes
