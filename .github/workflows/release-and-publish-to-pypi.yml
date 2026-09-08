@@ -45,7 +45,7 @@ jobs:
         #   OpenMP. Run the multithreading tests on every wheel so a missing
         #   OpenMP is caught here rather than by users.
         CIBW_TEST_REQUIRES: pytest
-        CIBW_TEST_COMMAND: pytest {project}/tests/test_multithreading.py
+        CIBW_TEST_COMMAND: pytest {project}/tests --ignore=tests/test_build.py
     strategy:
       matrix:
         os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, windows-11-arm, macos-15-intel, macos-latest]
