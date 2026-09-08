@@ -1,6 +1,6 @@
 # Benchmarks
 
-Here we benchmark the runtime of PySTE against the vector space dimension for both [evolver initialisation](initialisation.md) and [state propagation](propagation.md). Additionally, we compare the runtime required by PySTE with [QuTiP](https://qutip.org) to solve the Schrödinger with a given infidelity: [PySTE *vs.* QuTiP](pyste_vs_qutip.md)
+Here we benchmark the runtime of PySTE (`v1.0.0`) against the vector space dimension for both [evolver initialisation](initialisation.md) and [state propagation](propagation.md). Additionally, we compare the runtime required by PySTE with [QuTiP](https://qutip.org) to solve the Schrödinger with a given infidelity: [PySTE *vs.* QuTiP](pyste_vs_qutip.md)
 
 These benchmarks were performed with the default build options for PySTE. The hardware specifications were:
 
