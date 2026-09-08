@@ -2,8 +2,9 @@
 
 ## Release 1.1.2
 
-- Expanded support for [Eigen](https://eigen.tuxfamily.org/) versions to `>=3.4` and `<6`
-- Changed sparse matrices to row major to enable parallelization sparse–dense matrix products
+- Updated to [Suzuki-Trotter-Evolver](https://github.com/Christopher-K-Long/Suzuki-Trotter-Evolver) `v1.1.2` which gives
+    - Expanded support for [Eigen](https://eigen.tuxfamily.org/) versions to `>=3.4` and `<6`
+    - Changed sparse matrices to row major to enable parallelization sparse–dense matrix products
 
 ## Release 1.1.1
 
