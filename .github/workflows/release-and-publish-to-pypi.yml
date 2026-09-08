@@ -6,7 +6,7 @@ jobs:
     name: Checks
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - name: Check date-released in CITATION.cff
       run: |
         DATE=$(cat CITATION.cff | perl -nle"print $& while m{(?<=date-released: ').*(?=')}g")
@@ -55,19 +55,19 @@ jobs:
         os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, windows-11-arm, macos-15-intel, macos-latest]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         submodules: 'recursive'
         persist-credentials: false
     - name: Set up Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: "3.x"
     - name: Install cibuildwheel
       run: python -m pip install cibuildwheel==3.2.1
     - name: Build wheels
       run: python -m cibuildwheel --output-dir dist
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v7
       with:
         name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
         path: dist/*.whl
@@ -78,7 +78,7 @@ jobs:
     needs:
     - checks
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         submodules: 'recursive'
         persist-credentials: false
@@ -95,12 +95,12 @@ jobs:
         python3 -m
         build -s
     - name: Store the distribution packages
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: python-package-distributions
         path: dist/
 
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v7
       with:
         name: cibw-sdist
         path: dist/*.tar.gz
@@ -119,9 +119,9 @@ jobs:
       id-token: write  # IMPORTANT: mandatory for sigstore
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - name: Download all the dists
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         pattern: cibw-*
         path: dist/
@@ -171,7 +171,7 @@ jobs:
 
     steps:
     - name: Download all the dists
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v8
       with:
         pattern: cibw-*
         path: dist/
