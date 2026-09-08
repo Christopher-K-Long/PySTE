@@ -29,7 +29,7 @@ import py_ste
 
 Current support:
 
-|                    | macOS Intel<br/>(10.13+) | macOS Apple Silicon<br/>(11.0+) | Windows 64bit | Windows 32bit | Windows Arm64 | manylinux<br/>musllinux x86_64 | Other Linux |
+|                    | macOS Intel<br/>(10.13+, 10.15+ on 3.14) | macOS Apple Silicon<br/>(11.0+) | Windows 64bit | Windows 32bit | Windows Arm64 | manylinux<br/>musllinux x86_64 | Other Linux |
 |--------------------|-----|-----|-----|------|-----|-----|-----|
 | CPython 3.8        | ✅ | ✅  | ✅  | ✅  | Build from source | ✅ | Build from source |
 | CPython 3.9        | ✅ | ✅  | ✅  | ✅  | Build from source | ✅ | Build from source |
