@@ -5,6 +5,12 @@
 - Updated to [Suzuki-Trotter-Evolver](https://github.com/Christopher-K-Long/Suzuki-Trotter-Evolver) `v1.1.2` which gives
     - Expanded support for [Eigen](https://eigen.tuxfamily.org/) versions to `>=3.4` and `<6`
     - Changed sparse matrices to row major to enable parallelization sparse–dense matrix products
+- Changed CI to generate pre-built wheels with OpenMP support
+- Updated the GitHub actions:
+    - `actions/checkout@v4` -> `actions/checkout@v7`
+    - `actions/setup-python@v5` -> `actions/setup-python@v6`
+    - `actions/upload-artifact@v4` -> `actions/upload-artifact@v7`
+    - `actions/download-artifact@v4` -> `actions/download-artifact@v8`
 
 ## Release 1.1.1
 
