@@ -60,9 +60,19 @@ set(PYBIND11_FINDPYTHON ON)
 find_package(pybind11 CONFIG REQUIRED)
 find_package(OpenMP)
 
-# The version range must match the range Suzuki-Trotter-Evolver requires so
-#   that the find_package() it performs cannot pick up a different Eigen.
-find_package(Eigen3 3.4...<6 NO_MODULE)
+set(EIGEN_MINIMUM_VERSION 3.4)
+set(EIGEN_BELOW_VERSION 6)
+find_package(Eigen3 NO_MODULE)
+if (Eigen3_FOUND AND (Eigen3_VERSION VERSION_LESS ${EIGEN_MINIMUM_VERSION} OR
+                      Eigen3_VERSION VERSION_GREATER_EQUAL ${EIGEN_BELOW_VERSION}))
+    message(STATUS "Found Eigen ${Eigen3_VERSION}, which is outside the "
+                   "supported range >=${EIGEN_MINIMUM_VERSION} and "
+                   "<${EIGEN_BELOW_VERSION}.")
+    set(Eigen3_FOUND FALSE)
+    # The search above caches Eigen3_DIR, so it must be cleared or the search
+    #   below will just return the unsupported Eigen again.
+    unset(Eigen3_DIR CACHE)
+endif()
 if (NOT Eigen3_FOUND)
     message(STATUS "Eigen not found. Installing Eigen from submodule:")
     set(EIGEN_SUBMODULE_DIR ${CMAKE_CURRENT_BINARY_DIR}/dependencies/eigen)
@@ -81,7 +91,14 @@ if (NOT Eigen3_FOUND)
                             --target install
                     COMMAND_ERROR_IS_FATAL ANY)
     list(APPEND CMAKE_PREFIX_PATH ${EIGEN_SUBMODULE_DIR}/install)
-    find_package(Eigen3 3.4...<6 REQUIRED NO_MODULE)
+    find_package(Eigen3 REQUIRED NO_MODULE)
+    if (Eigen3_VERSION VERSION_LESS ${EIGEN_MINIMUM_VERSION} OR
+        Eigen3_VERSION VERSION_GREATER_EQUAL ${EIGEN_BELOW_VERSION})
+        message(FATAL_ERROR "The Eigen submodule is version ${Eigen3_VERSION}, "
+                            "which is outside the supported range "
+                            ">=${EIGEN_MINIMUM_VERSION} and "
+                            "<${EIGEN_BELOW_VERSION}.")
+    endif()
 endif()
 message(STATUS "Using Eigen ${Eigen3_VERSION} from ${Eigen3_DIR}")
 add_subdirectory(dependencies/Suzuki-Trotter-Evolver)
